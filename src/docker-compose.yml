@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  holepunch.web:
+    image: ${DOCKER_REGISTRY-}holepunchweb
+    build:
+      context: .
+      dockerfile: HolePunch.Web/Dockerfile
