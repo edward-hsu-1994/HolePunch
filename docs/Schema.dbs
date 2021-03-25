@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="HolePunch" id="Project_c94" database="PostgreSQL" >
+	<schema name="holepunch" >
+		<table name="service" prior="proxy_config" spec="" >
+			<comment><![CDATA[服務]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="name" prior="service_name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[服務名稱]]></comment>
+			</column>
+			<column name="port" prior="service_port" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[服務Proxy Listen埠號]]></comment>
+			</column>
+			<column name="protocol" type="varchar" length="16" jt="12" mandatory="y" >
+				<comment><![CDATA[通訊協議(TCP/UDP)]]></comment>
+			</column>
+			<column name="logo_url" type="varchar" jt="12" >
+				<comment><![CDATA[服務Logo圖片網址]]></comment>
+			</column>
+			<column name="enabled" type="boolean" jt="-7" mandatory="y" >
+				<comment><![CDATA[是否啟用]]></comment>
+			</column>
+			<index name="pk_proxy_config_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="service_allowlist" prior="service_allow_cidr" >
+			<comment><![CDATA[容許網段]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="service_id" type="integer" length="255" jt="4" mandatory="y" >
+				<comment><![CDATA[服務ID]]></comment>
+			</column>
+			<column name="service_forward_target_id" type="integer" jt="4" >
+				<comment><![CDATA[服務轉發目標ID，若為空則表示整個服務]]></comment>
+			</column>
+			<column name="type" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[類型]]></comment>
+			</column>
+			<column name="cidr" type="varchar" length="255" jt="12" >
+				<comment><![CDATA[網段]]></comment>
+			</column>
+			<column name="user_group_id" prior="user_group" type="integer" length="255" jt="4" >
+				<comment><![CDATA[使用者群組]]></comment>
+			</column>
+			<column name="user_id" prior="user" type="integer" length="255" jt="4" >
+				<comment><![CDATA[使用者ID]]></comment>
+			</column>
+			<index name="pk_service_allow_cidr_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_service_allowlist_service" virtual="y" to_schema="holepunch" to_table="service" >
+				<fk_column name="service_id" pk="id" />
+			</fk>
+			<fk name="fk_service_allowlist" virtual="y" to_schema="holepunch" to_table="service_forward_target" >
+				<fk_column name="service_forward_target_id" pk="id" />
+			</fk>
+		</table>
+		<table name="service_forward_target" prior="service_forward" >
+			<comment><![CDATA[服務轉發目標]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="service_id" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[服務ID]]></comment>
+			</column>
+			<column name="name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[轉發目標名稱]]></comment>
+			</column>
+			<column name="fqdn" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[目標FQDN]]></comment>
+			</column>
+			<column name="port" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[埠號]]></comment>
+			</column>
+			<column name="priority" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[優先權(0最大)]]></comment>
+			</column>
+			<column name="enabled" type="boolean" jt="-7" mandatory="y" >
+				<comment><![CDATA[是否啟用]]></comment>
+			</column>
+			<index name="pk_service_forward_target_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_service_forward_target" virtual="y" to_schema="holepunch" to_table="service" >
+				<fk_column name="service_id" pk="id" />
+			</fk>
+		</table>
+		<table name="tbl" />
+		<table name="tbl_0" />
+		<table name="user" prior="tbl_1" spec="" >
+			<comment><![CDATA[用戶]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="account" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[帳號]]></comment>
+			</column>
+			<column name="password" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[密碼(SHA1)]]></comment>
+			</column>
+			<column name="name" type="varchar" length="255" jt="12" >
+				<comment><![CDATA[名稱]]></comment>
+			</column>
+			<column name="enabled" type="boolean" jt="-7" mandatory="y" >
+				<comment><![CDATA[是否啟用]]></comment>
+			</column>
+			<index name="pk_tbl_1_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="user_group" prior="tbl_1" spec="" >
+			<comment><![CDATA[使用者群組]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="name" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[名稱]]></comment>
+			</column>
+			<column name="is_admin" type="boolean" jt="-7" mandatory="y" >
+				<comment><![CDATA[是否為管理者]]></comment>
+			</column>
+			<index name="pk_user_group_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="user_group_member" prior="user_group_" >
+			<comment><![CDATA[使用者群組成員]]></comment>
+			<column name="user_group_id" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[使用者群組ID]]></comment>
+			</column>
+			<column name="user_id" type="integer" jt="4" mandatory="y" >
+				<comment><![CDATA[使用者ID]]></comment>
+			</column>
+			<index name="pk_user_group_member" unique="PRIMARY_KEY" >
+				<column name="user_group_id" />
+				<column name="user_id" />
+			</index>
+			<fk name="fk_user_group_member" virtual="y" to_schema="holepunch" to_table="user_group" >
+				<fk_column name="user_group_id" pk="id" />
+			</fk>
+			<fk name="fk_user_group_member_user" virtual="y" to_schema="holepunch" to_table="user" >
+				<fk_column name="user_id" pk="id" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="MyDb" database="MySql" host="localhost" port="3306" user="root" />
+	<layout name="Default Layout" id="Layout_100b" show_relation="columns" >
+		<entity schema="holepunch" name="service" color="C1D8EE" x="48" y="48" />
+		<entity schema="holepunch" name="service_allowlist" color="C1D8EE" x="240" y="400" />
+		<entity schema="holepunch" name="service_forward_target" color="C1D8EE" x="272" y="48" />
+		<entity schema="holepunch" name="user" color="C1D8EE" x="704" y="192" />
+		<entity schema="holepunch" name="user_group" color="C1D8EE" x="496" y="48" />
+		<entity schema="holepunch" name="user_group_member" color="C1D8EE" x="704" y="48" />
+	</layout>
+</project>
