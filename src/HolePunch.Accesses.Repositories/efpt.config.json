@@ -1,0 +1,59 @@
+﻿{
+   "CodeGenerationMode": 1,
+   "ContextClassName": "HolePunchContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": null,
+   "ProjectRootNamespace": "HolePunch.Accesses.Repositories",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "holepunch.cidr_group",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.service",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.service_allowlist",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.service_forward_target",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.user",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.user_group",
+         "ObjectType": 0
+      },
+      {
+         "Name": "holepunch.user_group_member",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "holepunch",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSpatial": false
+}
