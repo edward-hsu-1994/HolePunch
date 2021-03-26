@@ -9,6 +9,7 @@ namespace HolePunch.Proxies
 {
     public interface IProxyServer
     {
+        Guid Id { get; }
         IReadOnlyCollection<IProxySession> Sessions { get; }
         ProxyServerStatus Status { get; }
         int ListenPort { get; }

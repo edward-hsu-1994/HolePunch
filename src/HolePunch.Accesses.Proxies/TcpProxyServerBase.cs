@@ -28,11 +28,13 @@ namespace HolePunch.Accesses.Proxies
 
         public TcpProxyServerBase(IPEndPoint forwardEndPoint, int listenPort = 0)
         {
+            Id = Guid.NewGuid();
             _sessions = new ConcurrentDictionary<Guid, IProxySession>();
             _forwardEndPoint = forwardEndPoint;
             _listenPort = listenPort;
         }
 
+        public Guid Id { get; private set; }
         public IReadOnlyCollection<IProxySession> Sessions => new ReadOnlyCollection<IProxySession>(_sessions.Values.ToList());
 
         public ProxyServerStatus Status => _status;
