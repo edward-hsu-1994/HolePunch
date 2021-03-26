@@ -24,11 +24,12 @@ namespace HolePunch.Accesses.Proxies
 
         public TcpProxySession(IPEndPoint forwardEndPoint, TcpClient client)
         {
+            Id = Guid.NewGuid();
             _forwardEndPoint = forwardEndPoint;
             _client = client;
         }
 
-
+        public Guid Id { get; private set; }
         public IPEndPoint ClientEndPoint => _client?.Client?.RemoteEndPoint as IPEndPoint;
 
         public IPEndPoint ForwardEndPoint => _forwardEndPoint;

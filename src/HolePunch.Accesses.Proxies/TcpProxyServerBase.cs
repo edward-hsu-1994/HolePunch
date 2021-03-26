@@ -14,21 +14,26 @@ namespace HolePunch.Accesses.Proxies
 {
     public abstract class TcpProxyServerBase : IProxyServer
     {
-        private ConcurrentBag<IProxySession> _sessions;
+        private ConcurrentDictionary<Guid, IProxySession> _sessions;
         private int _listenPort;
         private ProxyServerStatus _status = ProxyServerStatus.Shutdown;
         private IPEndPoint _forwardEndPoint;
         private Task _listenLoop;
         private TcpListener _tcpListener;
 
+
+        public event Action<IProxySession> OnConnected;
+        public event Action<IProxySession> OnDisconnected;
+
+
         public TcpProxyServerBase(IPEndPoint forwardEndPoint, int listenPort = 0)
         {
-            _sessions = new ConcurrentBag<IProxySession>();
+            _sessions = new ConcurrentDictionary<Guid, IProxySession>();
             _forwardEndPoint = forwardEndPoint;
             _listenPort = listenPort;
         }
 
-        public IReadOnlyCollection<IProxySession> Sessions => new ReadOnlyCollection<IProxySession>(_sessions.ToList());
+        public IReadOnlyCollection<IProxySession> Sessions => new ReadOnlyCollection<IProxySession>(_sessions.Values.ToList());
 
         public ProxyServerStatus Status => _status;
 
@@ -72,7 +77,7 @@ namespace HolePunch.Accesses.Proxies
             _tcpListener = null;
 
             // disconnect all session then clear sessions collection
-            return Task.WhenAll(_sessions.Select(x => x.Disconnect()).ToArray())
+            return Task.WhenAll(_sessions.Values.Select(x => x.Disconnect()).ToArray())
                 .ContinueWith((task) =>
                 {
                     _sessions.Clear();
@@ -133,11 +138,13 @@ namespace HolePunch.Accesses.Proxies
                         var newSession = new TcpProxySession(_forwardEndPoint, tcpClient);
                         newSession.OnConnected += session =>
                         {
-                            _sessions.Add(session);
+                            _sessions[session.Id] = session;
+                            OnConnected?.Invoke(session);
                         };
                         newSession.OnDisconnected += session =>
                         {
-                            _sessions.TryTake(out IProxySession _);
+                            _sessions.Remove(session.Id, out _);
+                            OnDisconnected?.Invoke(session);
                         };
 
                         // start connect

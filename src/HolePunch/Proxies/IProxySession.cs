@@ -12,6 +12,7 @@ namespace HolePunch.Proxies
         event Action<IProxySession> OnConnected;
         event Action<IProxySession> OnDisconnected;
 
+        Guid Id { get; }
         IPEndPoint ClientEndPoint { get; }
         IPEndPoint ForwardEndPoint { get; }
         ProxySessionStatus Status { get; }

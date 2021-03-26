@@ -12,7 +12,11 @@ namespace HolePunch.Proxies
         IReadOnlyCollection<IProxySession> Sessions { get; }
         ProxyServerStatus Status { get; }
         int ListenPort { get; }
-        public IPEndPoint ForwardEndPoint { get; }
+        IPEndPoint ForwardEndPoint { get; }
+
+        event Action<IProxySession> OnConnected;
+        event Action<IProxySession> OnDisconnected;
+
         Task Start();
         Task Stop();
     }
