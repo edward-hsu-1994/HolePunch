@@ -115,8 +115,6 @@
 				<fk_column name="service_id" pk="id" />
 			</fk>
 		</table>
-		<table name="tbl" />
-		<table name="tbl_0" />
 		<table name="user" prior="tbl_1" spec="" >
 			<comment><![CDATA[用戶]]></comment>
 			<column name="id" type="integer" jt="4" mandatory="y" >
