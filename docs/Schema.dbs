@@ -9,8 +9,7 @@
 			<column name="name" type="varchar" length="100" jt="12" mandatory="y" >
 				<comment><![CDATA[名稱]]></comment>
 			</column>
-			<column name="cidr_list" type="text[]" jt="2003" mandatory="y" >
-				<defo><![CDATA[{}]]></defo>
+			<column name="cidr_list" type="text[]" jt="2003" >
 				<comment><![CDATA[網段集合]]></comment>
 			</column>
 			<index name="pk_cidr_group_id" unique="PRIMARY_KEY" >
