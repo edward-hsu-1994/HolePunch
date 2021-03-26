@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="HolePunch" id="Project_c94" database="PostgreSQL" >
 	<schema name="holepunch" >
+		<table name="cidr_group" prior="cidr_suit" spec="" >
+			<comment><![CDATA[網段組]]></comment>
+			<column name="id" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
+			</column>
+			<column name="name" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[名稱]]></comment>
+			</column>
+			<column name="cidr_list" type="text[]" jt="2003" mandatory="y" >
+				<defo><![CDATA[{}]]></defo>
+				<comment><![CDATA[網段集合]]></comment>
+			</column>
+			<index name="pk_cidr_group_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
 		<table name="service" prior="proxy_config" spec="" >
 			<comment><![CDATA[服務]]></comment>
 			<column name="id" type="integer" jt="4" mandatory="y" >
@@ -10,7 +26,7 @@
 				<comment><![CDATA[服務名稱]]></comment>
 			</column>
 			<column name="port" prior="service_port" type="integer" jt="4" mandatory="y" >
-				<comment><![CDATA[服務Proxy Listen埠號]]></comment>
+				<comment><![CDATA[服務Listen埠號]]></comment>
 			</column>
 			<column name="protocol" type="varchar" length="16" jt="12" mandatory="y" >
 				<comment><![CDATA[通訊協議(TCP/UDP)]]></comment>
@@ -37,7 +53,10 @@
 				<comment><![CDATA[服務轉發目標ID，若為空則表示整個服務]]></comment>
 			</column>
 			<column name="type" type="varchar" length="255" jt="12" mandatory="y" >
-				<comment><![CDATA[類型]]></comment>
+				<comment><![CDATA[類型(CIDR_GROUP、CIDR、USER_GROUP、USER)]]></comment>
+			</column>
+			<column name="cidr_group_id" type="integer" jt="4" >
+				<comment><![CDATA[網段組]]></comment>
 			</column>
 			<column name="cidr" type="varchar" length="255" jt="12" >
 				<comment><![CDATA[網段]]></comment>
@@ -57,6 +76,15 @@
 			<fk name="fk_service_allowlist" virtual="y" to_schema="holepunch" to_table="service_forward_target" >
 				<fk_column name="service_forward_target_id" pk="id" />
 			</fk>
+			<fk name="fk_service_allowlist_cidr_group" virtual="y" to_schema="holepunch" to_table="cidr_group" >
+				<fk_column name="cidr_group_id" pk="id" />
+			</fk>
+			<fk name="fk_service_allowlist_user_group" virtual="y" to_schema="holepunch" to_table="user_group" >
+				<fk_column name="cidr_group_id" pk="id" />
+			</fk>
+			<fk name="fk_service_allowlist_user" virtual="y" to_schema="holepunch" to_table="user" >
+				<fk_column name="user_id" pk="id" />
+			</fk>
 		</table>
 		<table name="service_forward_target" prior="service_forward" >
 			<comment><![CDATA[服務轉發目標]]></comment>
@@ -69,8 +97,8 @@
 			<column name="name" type="varchar" length="100" jt="12" mandatory="y" >
 				<comment><![CDATA[轉發目標名稱]]></comment>
 			</column>
-			<column name="fqdn" type="varchar" length="255" jt="12" mandatory="y" >
-				<comment><![CDATA[目標FQDN]]></comment>
+			<column name="ip_address" prior="fqdn" type="varchar" length="255" jt="12" mandatory="y" >
+				<comment><![CDATA[IP]]></comment>
 			</column>
 			<column name="port" type="integer" jt="4" mandatory="y" >
 				<comment><![CDATA[埠號]]></comment>
@@ -148,11 +176,12 @@
 	</schema>
 	<connector name="MyDb" database="MySql" host="localhost" port="3306" user="root" />
 	<layout name="Default Layout" id="Layout_100b" show_relation="columns" >
+		<entity schema="holepunch" name="cidr_group" color="C1D8EE" x="560" y="304" />
 		<entity schema="holepunch" name="service" color="C1D8EE" x="48" y="48" />
 		<entity schema="holepunch" name="service_allowlist" color="C1D8EE" x="240" y="400" />
-		<entity schema="holepunch" name="service_forward_target" color="C1D8EE" x="272" y="48" />
-		<entity schema="holepunch" name="user" color="C1D8EE" x="704" y="192" />
-		<entity schema="holepunch" name="user_group" color="C1D8EE" x="496" y="48" />
-		<entity schema="holepunch" name="user_group_member" color="C1D8EE" x="704" y="48" />
+		<entity schema="holepunch" name="service_forward_target" color="C1D8EE" x="240" y="48" />
+		<entity schema="holepunch" name="user" color="C1D8EE" x="736" y="304" />
+		<entity schema="holepunch" name="user_group" color="C1D8EE" x="512" y="48" />
+		<entity schema="holepunch" name="user_group_member" color="C1D8EE" x="704" y="112" />
 	</layout>
 </project>
