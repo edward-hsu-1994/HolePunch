@@ -13,19 +13,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "40_Shared", "40_Shared", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50_Test", "50_Test", "{D339E8AB-0376-4F95-9264-137B9AEA29C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch", "HolePunch\HolePunch.csproj", "{78E28C27-0D6D-4A98-B0E3-173525DC9E9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolePunch", "HolePunch\HolePunch.csproj", "{78E28C27-0D6D-4A98-B0E3-173525DC9E9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch.Accesses.Proxies", "HolePunch.Accesses.Proxies\HolePunch.Accesses.Proxies.csproj", "{8A7D770D-653E-412E-B40B-2D6F8A96CB47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolePunch.Accesses.Proxies", "HolePunch.Accesses.Proxies\HolePunch.Accesses.Proxies.csproj", "{8A7D770D-653E-412E-B40B-2D6F8A96CB47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch.Accesses.Repositories", "HolePunch.Accesses.Repositories\HolePunch.Accesses.Repositories.csproj", "{E368D501-D54C-43CA-9EF5-2ECDEE1795B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolePunch.Accesses.Repositories", "HolePunch.Accesses.Repositories\HolePunch.Accesses.Repositories.csproj", "{E368D501-D54C-43CA-9EF5-2ECDEE1795B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch.Accesses", "HolePunch.Accesses\HolePunch.Accesses.csproj", "{447888C5-688B-4894-B4B6-AE5C614B65B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolePunch.Accesses", "HolePunch.Accesses\HolePunch.Accesses.csproj", "{447888C5-688B-4894-B4B6-AE5C614B65B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch.Web", "HolePunch.Web\HolePunch.Web.csproj", "{FC6CD438-2A9A-4208-ABC0-FB53A93FCDBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolePunch.Web", "HolePunch.Web\HolePunch.Web.csproj", "{FC6CD438-2A9A-4208-ABC0-FB53A93FCDBF}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9395CBB4-4F29-4CAE-BC0B-3ED1B4A80EC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "60_Deployment", "60_Deployment", "{254BC4B8-CBF0-41D0-9FF3-1D9CC93FF745}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolePunch.Accesses.Proxies.TestConsole", "HolePunch.Accesses.Proxies.TestConsole\HolePunch.Accesses.Proxies.TestConsole.csproj", "{8B80B3AF-3BF8-483D-9B52-4DD1AC694786}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{9395CBB4-4F29-4CAE-BC0B-3ED1B4A80EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9395CBB4-4F29-4CAE-BC0B-3ED1B4A80EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9395CBB4-4F29-4CAE-BC0B-3ED1B4A80EC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B80B3AF-3BF8-483D-9B52-4DD1AC694786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B80B3AF-3BF8-483D-9B52-4DD1AC694786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B80B3AF-3BF8-483D-9B52-4DD1AC694786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B80B3AF-3BF8-483D-9B52-4DD1AC694786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{447888C5-688B-4894-B4B6-AE5C614B65B5} = {3867F976-0328-43FE-BD99-9C162EE84ED4}
 		{FC6CD438-2A9A-4208-ABC0-FB53A93FCDBF} = {87133F61-82D0-415E-A51C-7E0D26C7CB88}
 		{9395CBB4-4F29-4CAE-BC0B-3ED1B4A80EC6} = {254BC4B8-CBF0-41D0-9FF3-1D9CC93FF745}
+		{8B80B3AF-3BF8-483D-9B52-4DD1AC694786} = {D339E8AB-0376-4F95-9264-137B9AEA29C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9EF2DC26-61C2-408E-AD7D-B732A4011449}
