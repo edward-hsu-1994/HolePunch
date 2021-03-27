@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HolePunch.Accesses.Proxies\HolePunch.Accesses.Proxies.csproj" />
     <ProjectReference Include="..\HolePunch.Accesses.Repositories\HolePunch.Accesses.Repositories.csproj" />
     <ProjectReference Include="..\HolePunch\HolePunch.csproj" />
   </ItemGroup>
