@@ -89,7 +89,7 @@ namespace HolePunch.Accesses.Domain
             instance.LogoUrl = service.LogoUrl;
             await _context.SaveChangesAsync();
 
-            await UpdateProxyServer(service);
+            await RestartProxyServer(service);
 
             return await GetService(service.Id);
         }
@@ -153,20 +153,10 @@ namespace HolePunch.Accesses.Domain
             await _proxyServerHub.AddProxyServer(proxyServer);
         }
 
-        private async Task UpdateProxyServer(Service service)
+        private async Task RestartProxyServer(Service service)
         {
-            var serverId = await GetProxyServerId(service.Id);
-
-            if (service.Enabled && !serverId.HasValue)
-            {
-                // will start
-                await StartProxyServer(service);
-            }
-            else if (!service.Enabled && serverId.HasValue)
-            {
-                // will stop
-                await _proxyServerHub.RemoveProxyServer(serverId.Value);
-            }
+            await StopProxyServer(service);
+            await StartProxyServer(service);
         }
 
         private async Task StopProxyServer(Service service)
@@ -182,25 +172,46 @@ namespace HolePunch.Accesses.Domain
         }
         #endregion
 
-        public Task<IEnumerable<ServiceForwardTarget>> ListServiceForwardTarget(int serviceId)
+
+        public async Task<IEnumerable<ServiceForwardTarget>> ListServiceForwardTarget(int serviceId)
         {
-            throw new NotImplementedException();
+            return await _context.ServiceForwardTarget.Where(x => x.ServiceId == serviceId).Select(ef.ServiceForwardTarget.GetToDomainExpression()).ToArrayAsync();
         }
         public Task<ServiceForwardTarget> GetServiceForwardTarget(int serviceForwardTargetId)
         {
-            throw new NotImplementedException();
+            return _context.ServiceForwardTarget.Where(x => x.Id == serviceForwardTargetId).Select(ef.ServiceForwardTarget.GetToDomainExpression()).SingleOrDefaultAsync();
         }
-        public Task<ServiceForwardTarget> CreateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget)
+        public async Task<ServiceForwardTarget> CreateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget)
         {
-            throw new NotImplementedException();
+            if (_context.ServiceForwardTarget.Where(x => x.ServiceId == serviceForwardTarget.ServiceId).Count() > 0)
+            {
+                throw new NotImplementedException();
+            }
+
+            var instance = ef.ServiceForwardTarget.FromDomain(serviceForwardTarget);
+            _context.ServiceForwardTarget.Add(instance);
+            await _context.SaveChangesAsync();
+
+            await RestartProxyServer(await GetService(instance.ServiceId));
+
+            return instance.ToDomain();
         }
-        public Task<ServiceForwardTarget> UpdateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget)
+        public async Task<ServiceForwardTarget> UpdateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget)
         {
-            throw new NotImplementedException();
+            var instance = await _context.ServiceForwardTarget.SingleOrDefaultAsync(x => x.Id == serviceForwardTarget.Id);
+            instance.Name = serviceForwardTarget.Name;
+            instance.Priority = serviceForwardTarget.Priority;
+            instance.ServiceId = serviceForwardTarget.ServiceId;
+            instance.IpAddress = serviceForwardTarget.IPAddress;
+            instance.Port = serviceForwardTarget.Port;
+            await _context.SaveChangesAsync();
+
+            return instance.ToDomain();
         }
         public Task DeleteServiceForwardTarget(int serviceForwardTargetId)
         {
-            throw new NotImplementedException();
+            _context.RemoveRange(_context.ServiceForwardTarget.Where(x => x.Id == serviceForwardTargetId));
+            return _context.SaveChangesAsync();
         }
 
 
