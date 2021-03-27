@@ -22,7 +22,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "holepunch.service_allowlist",
+         "Name": "holepunch.service_allow_rule",
          "ObjectType": 0
       },
       {

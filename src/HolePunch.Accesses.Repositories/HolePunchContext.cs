@@ -18,7 +18,7 @@ namespace HolePunch.Accesses.Repositories
 
         public virtual DbSet<CidrGroup> CidrGroup { get; set; }
         public virtual DbSet<Service> Service { get; set; }
-        public virtual DbSet<ServiceAllowlist> ServiceAllowlist { get; set; }
+        public virtual DbSet<ServiceAllowRule> ServiceAllowRule { get; set; }
         public virtual DbSet<ServiceForwardTarget> ServiceForwardTarget { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserGroup> UserGroup { get; set; }
@@ -54,7 +54,7 @@ namespace HolePunch.Accesses.Repositories
                 entity.Property(e => e.Protocol).HasComment("通訊協議(TCP/UDP)");
             });
 
-            modelBuilder.Entity<ServiceAllowlist>(entity =>
+            modelBuilder.Entity<ServiceAllowRule>(entity =>
             {
                 entity.HasComment("容許網段");
 

@@ -9,8 +9,8 @@ namespace HolePunch.Accesses.Repositories
     /// <summary>
     /// 容許網段
     /// </summary>
-    [Table("service_allowlist", Schema = "holepunch")]
-    public partial class ServiceAllowlist
+    [Table("service_allow_rule", Schema = "holepunch")]
+    public partial class ServiceAllowRule
     {
         [Key]
         [Column("id")]
