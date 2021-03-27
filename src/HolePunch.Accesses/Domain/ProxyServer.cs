@@ -22,11 +22,15 @@ namespace HolePunch.Accesses.Domain
     {
         private readonly ef.HolePunchContext _context;
         private readonly IProxyServerHub _proxyServerHub;
+        private readonly ICidrGroupService _cidrGroupService;
+        private readonly IUserGroupService _userGroupService;
         private static ConcurrentDictionary<int, Guid> _serverIdMap;
-        public ProxyServer(ef.HolePunchContext context, IProxyServerHub proxyServerHub)
+        public ProxyServer(ef.HolePunchContext context, IProxyServerHub proxyServerHub, ICidrGroupService cidrGroupService, IUserGroupService userGroupService)
         {
             _context = context;
             _proxyServerHub = proxyServerHub;
+            _cidrGroupService = cidrGroupService;
+            _userGroupService = userGroupService;
             _serverIdMap = new ConcurrentDictionary<int, Guid>();
         }
 
@@ -249,9 +253,29 @@ namespace HolePunch.Accesses.Domain
         }
 
 
-        private Task<IEnumerable<CIDRNotation>> GetServiceAllowRuleCIDRNotation(int serviceId, int? serviceForwardTargetId = null)
+        private async Task<IEnumerable<CIDRNotation>> GetServiceAllowRuleCIDRNotation(int serviceId, int? serviceForwardTargetId = null)
         {
-            throw new NotImplementedException();
+            var rules = await ListServiceAllowRule(serviceId, serviceForwardTargetId);
+            List<CIDRNotation> result = new List<CIDRNotation>();
+
+            foreach (var rule in rules)
+            {
+                switch (rule.Type)
+                {
+                    case ServiceAllowRuleTypes.CIDR:
+                        result.Add(CIDRNotation.Parse(rule.Cidr));
+                        break;
+                    case ServiceAllowRuleTypes.CIDR_GROUP:
+                        result.AddRange((await _cidrGroupService.GetCidrGroup(rule.CidrGroupId.Value)).CidrList.Select(CIDRNotation.Parse));
+                        break;
+                    case ServiceAllowRuleTypes.USER:
+                        break;
+                    case ServiceAllowRuleTypes.USER_GROUP:
+                        break;
+                }
+            }
+
+            return result;
         }
 
         public Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null)
