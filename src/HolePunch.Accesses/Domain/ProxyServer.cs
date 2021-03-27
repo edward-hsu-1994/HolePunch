@@ -200,6 +200,23 @@ namespace HolePunch.Accesses.Domain
                 await fwProxyServer.UpdateAllowCidrList(await GetServiceAllowRuleCIDRNotation(service.Id));
             }
         }
+
+        public async Task ReflashAllProxyServerAllowRules()
+        {
+            foreach (var kp in _serverIdMap.ToArray())
+            {
+                var serviceId = kp.Key;
+                var serverId = kp.Value;
+
+                var proxyServer = await _proxyServerHub.GetProxyServer(serverId);
+
+                if (proxyServer is FirewallTcpProxyServer fwProxyServer)
+                {
+                    var rules = await ListServiceAllowRule(serviceId);
+                    await fwProxyServer.UpdateAllowCidrList(await GetServiceAllowRuleCIDRNotation(serviceId));
+                }
+            }
+        }
         #endregion
 
 
