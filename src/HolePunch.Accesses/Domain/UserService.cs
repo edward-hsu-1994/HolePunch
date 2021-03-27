@@ -18,8 +18,8 @@ namespace HolePunch.Accesses.Domain
 {
     public class UserService : IUserService
     {
-        private Repositories.HolePunchContext _context;
-        public UserService(Repositories.HolePunchContext context)
+        private readonly ef.HolePunchContext _context;
+        public UserService(ef.HolePunchContext context)
         {
             _context = context;
         }
