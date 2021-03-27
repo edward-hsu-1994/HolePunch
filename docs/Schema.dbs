@@ -40,7 +40,7 @@
 				<column name="id" />
 			</index>
 		</table>
-		<table name="service_allowlist" prior="service_allow_cidr" >
+		<table name="service_allow_rule" prior="service_allowlist" >
 			<comment><![CDATA[容許網段]]></comment>
 			<column name="id" type="integer" jt="4" mandatory="y" >
 				<identity><![CDATA[GENERATED ALWAYS AS IDENTITY]]></identity>
@@ -79,7 +79,7 @@
 				<fk_column name="cidr_group_id" pk="id" />
 			</fk>
 			<fk name="fk_service_allowlist_user_group" virtual="y" to_schema="holepunch" to_table="user_group" >
-				<fk_column name="cidr_group_id" pk="id" />
+				<fk_column name="user_group_id" pk="id" />
 			</fk>
 			<fk name="fk_service_allowlist_user" virtual="y" to_schema="holepunch" to_table="user" >
 				<fk_column name="user_id" pk="id" />
@@ -171,11 +171,10 @@
 			</fk>
 		</table>
 	</schema>
-	<connector name="MyDb" database="MySql" host="localhost" port="3306" user="root" />
 	<layout name="Default Layout" id="Layout_100b" show_relation="columns" >
 		<entity schema="holepunch" name="cidr_group" color="C1D8EE" x="560" y="304" />
 		<entity schema="holepunch" name="service" color="C1D8EE" x="48" y="48" />
-		<entity schema="holepunch" name="service_allowlist" color="C1D8EE" x="240" y="400" />
+		<entity schema="holepunch" name="service_allow_rule" color="C1D8EE" x="240" y="400" />
 		<entity schema="holepunch" name="service_forward_target" color="C1D8EE" x="240" y="48" />
 		<entity schema="holepunch" name="user" color="C1D8EE" x="736" y="304" />
 		<entity schema="holepunch" name="user_group" color="C1D8EE" x="512" y="48" />
