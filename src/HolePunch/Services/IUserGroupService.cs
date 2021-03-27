@@ -10,9 +10,9 @@ namespace HolePunch.Services
     public interface IUserGroupService
     {
         Task<IEnumerable<UserGroup>> ListUserGroup();
-        Task<CidrGroup> GetUserGroup(int userGroupId);
-        Task<CidrGroup> CreateUserGroup(UserGroup userGroup);
-        Task<CidrGroup> UpdateUserGroup(UserGroup userGroup);
+        Task<UserGroup> GetUserGroup(int userGroupId);
+        Task<UserGroup> CreateUserGroup(UserGroup userGroup);
+        Task<UserGroup> UpdateUserGroup(UserGroup userGroup);
         Task DeleteUserGroup(int userGroupId);
 
         Task<IEnumerable<User>> ListUserGroupMember(int userGroupId);
