@@ -9,11 +9,11 @@ namespace HolePunch.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> ListCidrGroup();
+        Task<IEnumerable<User>> ListUser();
         Task<User> GetUser(int userId);
         Task<User> CreateUser(User user);
         Task<User> UpdateUser(User user);
-        Task<User> UpdatePassword(int userId, string password);
+        Task UpdatePassword(int userId, string password);
         Task<User> VerifyPassword(string account, string password);
         Task DeleteUser(int userId);
     }
