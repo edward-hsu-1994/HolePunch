@@ -178,6 +178,24 @@ namespace HolePunch.Accesses.Domain
 
             await _proxyServerHub.RemoveProxyServer(serverId.Value);
         }
+
+        private async Task UpdateProxyServerAllowRules(Service service)
+        {
+            var serverId = await GetProxyServerId(service.Id);
+
+            if (!serverId.HasValue)
+            {
+                return;
+            }
+
+            var proxyServer = await _proxyServerHub.GetProxyServer(serverId.Value);
+
+            if (proxyServer is FirewallTcpProxyServer fwProxyServer)
+            {
+                var rules = await ListServiceAllowRule(service.Id);
+                await fwProxyServer.UpdateAllowCidrList(await GetServiceAllowRuleCIDRNotation(service.Id));
+            }
+        }
         #endregion
 
 
