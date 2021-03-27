@@ -1,6 +1,7 @@
 ﻿using HolePunch.Domain;
 using HolePunch.Services;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using System;
@@ -16,9 +17,12 @@ namespace HolePunch.Accesses.Domain
     public class UserGroupService : IUserGroupService
     {
         private readonly ef.HolePunchContext _context;
-        public UserGroupService(ef.HolePunchContext context)
+        private readonly IServiceProvider _sp;
+
+        public UserGroupService(ef.HolePunchContext context, IServiceProvider sp)
         {
             _context = context;
+            _sp = sp;
         }
 
         public async Task<IEnumerable<UserGroup>> ListUserGroup()
@@ -45,13 +49,18 @@ namespace HolePunch.Accesses.Domain
             instance.Name = userGroup.Name;
             instance.IsAdmin = userGroup.IsAdmin;
             await _context.SaveChangesAsync();
+
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+
             return instance.ToDomain();
         }
 
-        public Task DeleteUserGroup(int userGroupId)
+        public async Task DeleteUserGroup(int userGroupId)
         {
+            _context.RemoveRange(_context.UserGroupMember.Where(x => x.UserGroupId == userGroupId));
             _context.RemoveRange(_context.UserGroup.Where(x => x.Id == userGroupId));
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
         }
 
         public async Task<IEnumerable<User>> ListUserGroupMember(int userGroupId)
@@ -70,12 +79,14 @@ namespace HolePunch.Accesses.Domain
                 UserId = userId
             });
             await _context.SaveChangesAsync();
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
         }
 
-        public Task RemoveUserGroupMember(int userGroupId, int userId)
+        public async Task RemoveUserGroupMember(int userGroupId, int userId)
         {
             _context.RemoveRange(_context.UserGroupMember.Where(x => x.UserGroupId == userGroupId && x.UserId == userId));
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
         }
     }
 }

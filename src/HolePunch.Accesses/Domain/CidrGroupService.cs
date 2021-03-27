@@ -2,6 +2,7 @@
 using HolePunch.Services;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,11 @@ namespace HolePunch.Accesses.Domain
     public class CidrGroupService : ICidrGroupService
     {
         private readonly ef.HolePunchContext _context;
-        public CidrGroupService(ef.HolePunchContext context)
+        private readonly IServiceProvider _sp;
+        public CidrGroupService(ef.HolePunchContext context, IServiceProvider sp)
         {
             _context = context;
+            _sp = sp;
         }
 
         public async Task<IEnumerable<CidrGroup>> ListCidrGroup()
@@ -46,13 +49,18 @@ namespace HolePunch.Accesses.Domain
             instance.CidrList = cidrGroup.CidrList;
             await _context.SaveChangesAsync();
 
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+
             return instance.ToDomain();
         }
 
-        public Task DeleteCidrGroup(int cidrGroupId)
+        public async Task DeleteCidrGroup(int cidrGroupId)
         {
+            _context.ServiceAllowRule.RemoveRange(_context.ServiceAllowRule.Where(x => x.CidrGroupId == cidrGroupId));
             _context.CidrGroup.RemoveRange(_context.CidrGroup.Where(x => x.Id == cidrGroupId));
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
         }
     }
 }
