@@ -13,10 +13,10 @@ using ef = HolePunch.Accesses.Repositories;
 
 namespace HolePunch.Accesses.Domain
 {
-    public class CidrService : ICidrService
+    public class CidrGroupService : ICidrGroupService
     {
         private readonly ef.HolePunchContext _context;
-        public CidrService(ef.HolePunchContext context)
+        public CidrGroupService(ef.HolePunchContext context)
         {
             _context = context;
         }

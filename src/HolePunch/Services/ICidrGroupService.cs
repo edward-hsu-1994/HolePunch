@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HolePunch.Services
 {
-    public interface ICidrService
+    public interface ICidrGroupService
     {
         Task<IEnumerable<CidrGroup>> ListCidrGroup();
         Task<CidrGroup> GetCidrGroup(int cidrGroupId);
