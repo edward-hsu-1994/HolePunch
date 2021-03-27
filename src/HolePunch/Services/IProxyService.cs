@@ -21,12 +21,12 @@ namespace HolePunch.Services
         Task<ServiceForwardTarget> GetServiceForwardTarget(int serviceForwardTargetId);
         Task<ServiceForwardTarget> CreateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget);
         Task<ServiceForwardTarget> UpdateServiceForwardTarget(ServiceForwardTarget serviceForwardTarget);
-        Task DeleteServiceForwardTarget(int serviceForwardTargetId);
+        Task DeleteServiceForwardTarget(int serviceForwardTargetId, bool passServerOperator = false);
 
-        Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId);
+        Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null);
         Task<ServiceAllowRule> GetServiceAllowRule(int serviceAllowRuleId);
         Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule);
         Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule);
-        Task DeleteServiceAllowRule(int serviceAllowRuleId);
+        Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false);
     }
 }

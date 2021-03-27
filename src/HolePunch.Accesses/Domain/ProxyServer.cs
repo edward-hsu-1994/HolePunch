@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 using ef = HolePunch.Accesses.Repositories;
 using HolePunch.Accesses.Proxies;
+using Firewall;
 
 namespace HolePunch.Accesses.Domain
 {
@@ -100,13 +101,13 @@ namespace HolePunch.Accesses.Domain
             // remove all allow rules
             foreach (var ruleId in (await ListServiceAllowRule(serviceId)).Select(x => x.Id))
             {
-                await DeleteServiceAllowRule(ruleId);
+                await DeleteServiceAllowRule(ruleId, true);
             }
 
             // remove all targets 
             foreach (var targetId in (await ListServiceForwardTarget(serviceId)).Select(x => x.Id))
             {
-                await DeleteServiceForwardTarget(targetId);
+                await DeleteServiceForwardTarget(targetId, true);
             }
 
             _context.RemoveRange(_context.Service.Where(x => x.Id == serviceId));
@@ -142,7 +143,7 @@ namespace HolePunch.Accesses.Domain
             switch (service.Protocol)
             {
                 case ServiceProtocols.TCP:
-                    proxyServer = new TcpProxyServer(IPEndPoint.Parse(target.IPAddress + ":" + target.Port), target.Port);
+                    proxyServer = new FirewallTcpProxyServer(IPEndPoint.Parse(target.IPAddress + ":" + target.Port), target.Port);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -150,6 +151,13 @@ namespace HolePunch.Accesses.Domain
             }
 
             _serverIdMap[service.Id] = proxyServer.Id;
+
+            if (proxyServer is FirewallTcpProxyServer fwProxyServer)
+            {
+                var rules = await ListServiceAllowRule(service.Id);
+                await fwProxyServer.UpdateAllowCidrList(await GetServiceAllowRuleCIDRNotation(service.Id, target.Id));
+            }
+
             await _proxyServerHub.AddProxyServer(proxyServer);
         }
 
@@ -206,16 +214,29 @@ namespace HolePunch.Accesses.Domain
             instance.Port = serviceForwardTarget.Port;
             await _context.SaveChangesAsync();
 
+            await RestartProxyServer(await GetService(instance.ServiceId));
+
             return instance.ToDomain();
         }
-        public Task DeleteServiceForwardTarget(int serviceForwardTargetId)
+        public async Task DeleteServiceForwardTarget(int serviceForwardTargetId, bool passServerOperator = false)
         {
+            var serviceForwardTarget = await GetServiceForwardTarget(serviceForwardTargetId);
             _context.RemoveRange(_context.ServiceForwardTarget.Where(x => x.Id == serviceForwardTargetId));
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+
+            if (!passServerOperator)
+            {
+                await RestartProxyServer(await GetService(serviceForwardTarget.ServiceId));
+            }
         }
 
 
-        public Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId)
+        private Task<IEnumerable<CIDRNotation>> GetServiceAllowRuleCIDRNotation(int serviceId, int? serviceForwardTargetId = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null)
         {
             throw new NotImplementedException();
         }
@@ -231,7 +252,7 @@ namespace HolePunch.Accesses.Domain
         {
             throw new NotImplementedException();
         }
-        public Task DeleteServiceAllowRule(int serviceAllowRuleId)
+        public Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false)
         {
             throw new NotImplementedException();
         }
