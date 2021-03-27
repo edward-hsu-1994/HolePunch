@@ -258,9 +258,16 @@ namespace HolePunch.Accesses.Domain
         }
 
 
-        public Task InitialCurrentServices()
+        public async Task InitialServices()
         {
-            throw new NotImplementedException();
+            var services = await ListService();
+
+            foreach (var service in services)
+            {
+                if (!service.Enabled) continue;
+
+                await StartProxyServer(service);
+            }
         }
     }
 }

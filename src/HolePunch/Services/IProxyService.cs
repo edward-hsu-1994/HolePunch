@@ -9,7 +9,7 @@ namespace HolePunch.Services
 {
     public interface IProxyService
     {
-        Task InitialCurrentServices();
+        Task InitialServices();
 
         Task<IEnumerable<Service>> ListService();
         Task<Service> GetService(int serviceId);
