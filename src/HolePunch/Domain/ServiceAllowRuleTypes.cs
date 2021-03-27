@@ -4,11 +4,11 @@ using System.Text;
 
 namespace HolePunch.Domain
 {
-    public enum ServiceAllowRuleTypes
+    public class ServiceAllowRuleTypes
     {
-        CIDR,
-        CIDR_GROUP,
-        USER,
-        USER_GROUP
+        public const string CIDR = "CIDR";
+        public const string CIDR_GROUP = "CIDR_GROUP";
+        public const string USER = "USER";
+        public const string USER_GROUP = "USER_GROUP";
     }
 }

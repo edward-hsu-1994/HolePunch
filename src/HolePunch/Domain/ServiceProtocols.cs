@@ -4,8 +4,8 @@ using System.Text;
 
 namespace HolePunch.Domain
 {
-    public enum ServiceProtocols
+    public class ServiceProtocols
     {
-        TCP
+        public const string TCP = "TCP";
     }
 }

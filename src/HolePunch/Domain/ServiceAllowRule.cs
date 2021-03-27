@@ -8,27 +8,13 @@ namespace HolePunch.Domain
     {
         public int Id { get; set; }
         public int ServiceId { get; set; }
-        public int ServiceForwardTargetId { get; set; }
-        public ServiceAllowRuleTypes Type { get; set; }
-    }
+        public int? ServiceForwardTargetId { get; set; }
+        public string Type { get; set; }
 
-    public class ServiceAllowCidrGroupRule : ServiceAllowRule
-    {
-        public int CidrGroupId { get; set; }
-    }
 
-    public class ServiceAllowCidrRule : ServiceAllowRule
-    {
+        public int? CidrGroupId { get; set; }
         public string Cidr { get; set; }
-    }
-
-    public class ServiceAllowUserGroupRule : ServiceAllowRule
-    {
-        public int UserGroupId { get; set; }
-    }
-
-    public class ServiceAllowUserRule : ServiceAllowRule
-    {
-        public int UserId { get; set; }
+        public int? UserGroupId { get; set; }
+        public int? UserId { get; set; }
     }
 }
