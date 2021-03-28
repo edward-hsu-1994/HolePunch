@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
 using XPY.ToolKit.Utilities.Cryptography;
 
 using ef = HolePunch.Accesses.Repositories;
@@ -19,9 +20,11 @@ namespace HolePunch.Accesses.Domain
     public class UserService : IUserService
     {
         private readonly ef.HolePunchContext _context;
-        public UserService(ef.HolePunchContext context)
+        private readonly IServiceProvider _sp;
+        public UserService(ef.HolePunchContext context, IServiceProvider sp)
         {
             _context = context;
+            _sp = sp;
         }
 
         public async Task<IEnumerable<User>> ListUser()
@@ -51,13 +54,16 @@ namespace HolePunch.Accesses.Domain
 
             await _context.SaveChangesAsync();
 
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+
             return instance;
         }
 
-        public Task DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
             _context.RemoveRange(_context.User.Where(x => x.Id == userId));
-            return _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
         }
 
         public async Task UpdatePassword(int userId, string password)
@@ -78,5 +84,6 @@ namespace HolePunch.Accesses.Domain
                 .Select(ef.User.GetToDomainExpression())
                 .SingleOrDefaultAsync();
         }
+
     }
 }
