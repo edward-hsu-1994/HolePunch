@@ -143,6 +143,8 @@ namespace HolePunch.Accesses.Domain
             }
 
             var targets = await ListServiceForwardTarget(service.Id);
+            targets = targets.Where(x => x.Enabled);
+
             if (targets.Count() > 1)
             {
                 throw new NotImplementedException();
@@ -159,7 +161,7 @@ namespace HolePunch.Accesses.Domain
             switch (service.Protocol)
             {
                 case ServiceProtocols.TCP:
-                    proxyServer = new FirewallTcpProxyServer(IPEndPoint.Parse(target.IPAddress + ":" + target.Port), target.Port);
+                    proxyServer = new FirewallTcpProxyServer(IPEndPoint.Parse(target.IPAddress + ":" + target.Port), service.Port);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -315,13 +317,13 @@ namespace HolePunch.Accesses.Domain
             return result;
         }
 
-        public Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null)
+        public async Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null)
         {
-            throw new NotImplementedException();
+            return await _context.ServiceAllowRule.Where(x => x.ServiceId == serviceId).Select(ef.ServiceAllowRule.GetToDomainExpression()).ToArrayAsync();
         }
         public Task<ServiceAllowRule> GetServiceAllowRule(int serviceAllowRuleId)
         {
-            throw new NotImplementedException();
+            return _context.ServiceAllowRule.Where(x => x.Id == serviceAllowRuleId).Select(ef.ServiceAllowRule.GetToDomainExpression()).SingleOrDefaultAsync();
         }
         public async Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule)
         {

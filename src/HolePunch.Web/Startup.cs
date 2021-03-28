@@ -44,6 +44,8 @@ namespace HolePunch.Web
                 config.UseNpgsql(Configuration.GetConnectionString("PG"));
             });
 
+            services.AddOpenApiDocument();
+
             services.AddControllers();
         }
 
@@ -68,6 +70,9 @@ namespace HolePunch.Web
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi(); // serve documents (same as app.UseSwagger())
+            app.UseSwaggerUi3(); // serve Swagger UI
         }
     }
 }
