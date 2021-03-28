@@ -18,7 +18,7 @@ using Firewall;
 
 namespace HolePunch.Accesses.Domain
 {
-    public class ProxyServer : IProxyService
+    public class ProxyService : IProxyService
     {
         private readonly ef.HolePunchContext _context;
         private readonly IProxyServerHub _proxyServerHub;
@@ -26,7 +26,7 @@ namespace HolePunch.Accesses.Domain
         private readonly IUserGroupService _userGroupService;
         private readonly IUserService _userService;
         private static ConcurrentDictionary<int, Guid> _serverIdMap;
-        public ProxyServer(
+        public ProxyService(
             ef.HolePunchContext context,
             IProxyServerHub proxyServerHub,
             ICidrGroupService cidrGroupService,
@@ -131,6 +131,11 @@ namespace HolePunch.Accesses.Domain
         #region Server Manage
         private async Task StartProxyServer(Service service)
         {
+            if (!service.Enabled)
+            {
+                return;
+            }
+
             var serverId = await GetProxyServerId(service.Id);
             if (serverId.HasValue)
             {
