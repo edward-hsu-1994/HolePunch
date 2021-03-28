@@ -117,6 +117,7 @@ namespace HolePunch.Accesses.Domain
         public async Task SetUserIP(int userId, IPAddress ipAddress)
         {
             _userIpMap[userId] = ipAddress;
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
     }
 }
