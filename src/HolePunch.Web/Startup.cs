@@ -1,5 +1,6 @@
 using HolePunch.Accesses;
 using HolePunch.Accesses.Domain;
+using HolePunch.Accesses.Repositories;
 using HolePunch.Proxies;
 using HolePunch.Services;
 
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,6 +38,11 @@ namespace HolePunch.Web
             services.AddScoped<IProxyService, ProxyService>();
             services.AddScoped<IUserGroupService, UserGroupService>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddDbContext<HolePunchContext>(config =>
+            {
+                config.UseNpgsql(Configuration.GetConnectionString("PG"));
+            });
 
             services.AddControllers();
         }
