@@ -49,7 +49,7 @@ namespace HolePunch.Accesses.Domain
             instance.CidrList = cidrGroup.CidrList;
             await _context.SaveChangesAsync();
 
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
 
             return instance.ToDomain();
         }
@@ -60,7 +60,7 @@ namespace HolePunch.Accesses.Domain
             _context.CidrGroup.RemoveRange(_context.CidrGroup.Where(x => x.Id == cidrGroupId));
             await _context.SaveChangesAsync();
 
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
     }
 }

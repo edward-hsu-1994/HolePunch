@@ -63,7 +63,7 @@ namespace HolePunch.Accesses.Domain
 
             await _context.SaveChangesAsync();
 
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
 
             return instance;
         }
@@ -72,7 +72,7 @@ namespace HolePunch.Accesses.Domain
         {
             _context.RemoveRange(_context.User.Where(x => x.Id == userId));
             await _context.SaveChangesAsync();
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
 
         public async Task UpdatePassword(int userId, string password)

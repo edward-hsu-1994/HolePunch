@@ -1,3 +1,8 @@
+using HolePunch.Accesses;
+using HolePunch.Accesses.Domain;
+using HolePunch.Proxies;
+using HolePunch.Services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,12 +31,21 @@ namespace HolePunch.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IProxyServerHub, TcpProxyServerHub>();
+            services.AddScoped<ICidrGroupService, CidrGroupService>();
+            services.AddScoped<IProxyService, ProxyService>();
+            services.AddScoped<IUserGroupService, UserGroupService>();
+            services.AddScoped<IUserService, UserService>();
+
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IProxyService proxyService)
         {
+            // booting all enabled services
+            proxyService.InitialServices().Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

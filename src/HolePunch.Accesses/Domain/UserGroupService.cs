@@ -50,7 +50,7 @@ namespace HolePunch.Accesses.Domain
             instance.IsAdmin = userGroup.IsAdmin;
             await _context.SaveChangesAsync();
 
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
 
             return instance.ToDomain();
         }
@@ -60,7 +60,7 @@ namespace HolePunch.Accesses.Domain
             _context.RemoveRange(_context.UserGroupMember.Where(x => x.UserGroupId == userGroupId));
             _context.RemoveRange(_context.UserGroup.Where(x => x.Id == userGroupId));
             await _context.SaveChangesAsync();
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
 
         public async Task<IEnumerable<User>> ListUserGroupMember(int userGroupId)
@@ -79,14 +79,14 @@ namespace HolePunch.Accesses.Domain
                 UserId = userId
             });
             await _context.SaveChangesAsync();
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
 
         public async Task RemoveUserGroupMember(int userGroupId, int userId)
         {
             _context.RemoveRange(_context.UserGroupMember.Where(x => x.UserGroupId == userGroupId && x.UserId == userId));
             await _context.SaveChangesAsync();
-            await _sp.GetService<ProxyServer>().ReflashAllProxyServerAllowRules();
+            await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
     }
 }
