@@ -318,17 +318,40 @@ namespace HolePunch.Accesses.Domain
         {
             throw new NotImplementedException();
         }
-        public Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule)
+        public async Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule)
         {
-            throw new NotImplementedException();
+            var instance = ef.ServiceAllowRule.FromDomain(serviceAllowRule);
+            _context.ServiceAllowRule.Add(instance);
+            await _context.SaveChangesAsync();
+            await UpdateProxyServerAllowRules(await GetService(serviceAllowRule.ServiceId));
+
+            return instance.ToDomain();
         }
-        public Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule)
+        public async Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule)
         {
-            throw new NotImplementedException();
+            var instance = await _context.ServiceAllowRule.SingleOrDefaultAsync(x => x.Id == serviceAllowRule.Id);
+            instance.ServiceId = serviceAllowRule.ServiceId;
+            instance.ServiceForwardTargetId = serviceAllowRule.ServiceForwardTargetId;
+            instance.Type = serviceAllowRule.Type;
+            instance.Cidr = serviceAllowRule.Cidr;
+            instance.CidrGroupId = serviceAllowRule.CidrGroupId;
+            instance.UserId = serviceAllowRule.UserId;
+            instance.UserGroupId = serviceAllowRule.UserGroupId;
+
+            await UpdateProxyServerAllowRules(await GetService(serviceAllowRule.ServiceId));
+
+            return instance.ToDomain();
         }
-        public Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false)
+        public async Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false)
         {
-            throw new NotImplementedException();
+            var instance = await _context.ServiceAllowRule.SingleOrDefaultAsync(x => x.Id == serviceAllowRuleId);
+            _context.RemoveRange(_context.ServiceAllowRule.Where(x => x.Id == serviceAllowRuleId));
+            await _context.SaveChangesAsync();
+
+            if (!passServerOperator)
+            {
+                await UpdateProxyServerAllowRules(await GetService(instance.ServiceId));
+            }
         }
 
 
