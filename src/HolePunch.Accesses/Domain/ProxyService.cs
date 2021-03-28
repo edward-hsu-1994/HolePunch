@@ -26,6 +26,12 @@ namespace HolePunch.Accesses.Domain
         private readonly IUserGroupService _userGroupService;
         private readonly IUserService _userService;
         private static ConcurrentDictionary<int, Guid> _serverIdMap;
+
+        static ProxyService()
+        {
+            _serverIdMap = new ConcurrentDictionary<int, Guid>();
+        }
+
         public ProxyService(
             ef.HolePunchContext context,
             IProxyServerHub proxyServerHub,
@@ -38,7 +44,6 @@ namespace HolePunch.Accesses.Domain
             _cidrGroupService = cidrGroupService;
             _userGroupService = userGroupService;
             _userService = userService;
-            _serverIdMap = new ConcurrentDictionary<int, Guid>();
         }
 
         private async Task<Guid?> GetProxyServerId(int serviceId)
@@ -99,6 +104,7 @@ namespace HolePunch.Accesses.Domain
             instance.Port = service.Port;
             instance.Protocol = service.Protocol;
             instance.LogoUrl = service.LogoUrl;
+            instance.Enabled = service.Enabled;
             await _context.SaveChangesAsync();
 
             await RestartProxyServer(service);
@@ -195,6 +201,8 @@ namespace HolePunch.Accesses.Domain
             }
 
             await _proxyServerHub.RemoveProxyServer(serverId.Value);
+
+            _serverIdMap.Remove(service.Id, out Guid _);
         }
 
         private async Task UpdateProxyServerAllowRules(Service service)
