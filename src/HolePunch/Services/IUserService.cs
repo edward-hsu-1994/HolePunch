@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,5 +17,8 @@ namespace HolePunch.Services
         Task UpdatePassword(int userId, string password);
         Task<User> VerifyPassword(string account, string password);
         Task DeleteUser(int userId);
+
+        Task<IPAddress> GetUserIP(int userId);
+        Task SetUserIP(int userId, IPAddress ipAddress);
     }
 }

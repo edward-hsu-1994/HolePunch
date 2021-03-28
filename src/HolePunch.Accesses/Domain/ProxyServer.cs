@@ -24,13 +24,20 @@ namespace HolePunch.Accesses.Domain
         private readonly IProxyServerHub _proxyServerHub;
         private readonly ICidrGroupService _cidrGroupService;
         private readonly IUserGroupService _userGroupService;
+        private readonly IUserService _userService;
         private static ConcurrentDictionary<int, Guid> _serverIdMap;
-        public ProxyServer(ef.HolePunchContext context, IProxyServerHub proxyServerHub, ICidrGroupService cidrGroupService, IUserGroupService userGroupService)
+        public ProxyServer(
+            ef.HolePunchContext context,
+            IProxyServerHub proxyServerHub,
+            ICidrGroupService cidrGroupService,
+            IUserGroupService userGroupService,
+            IUserService userService)
         {
             _context = context;
             _proxyServerHub = proxyServerHub;
             _cidrGroupService = cidrGroupService;
             _userGroupService = userGroupService;
+            _userService = userService;
             _serverIdMap = new ConcurrentDictionary<int, Guid>();
         }
 
@@ -286,8 +293,16 @@ namespace HolePunch.Accesses.Domain
                         result.AddRange((await _cidrGroupService.GetCidrGroup(rule.CidrGroupId.Value)).CidrList.Select(CIDRNotation.Parse));
                         break;
                     case ServiceAllowRuleTypes.USER:
+                        var ip = await _userService.GetUserIP(rule.UserId.Value);
+                        result.Add(CIDRNotation.Parse(ip.Address.ToString() + "/" + (ip.GetAddressBytes().Length * 8)));
                         break;
                     case ServiceAllowRuleTypes.USER_GROUP:
+                        var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
+                        foreach (var user in userlist)
+                        {
+                            var userIp = await _userService.GetUserIP(rule.UserId.Value);
+                            result.Add(CIDRNotation.Parse(userIp.Address.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
+                        }
                         break;
                 }
             }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using XPY.ToolKit.Utilities.Cryptography;
 
 using ef = HolePunch.Accesses.Repositories;
+using System.Net;
 
 namespace HolePunch.Accesses.Domain
 {
@@ -21,6 +23,13 @@ namespace HolePunch.Accesses.Domain
     {
         private readonly ef.HolePunchContext _context;
         private readonly IServiceProvider _sp;
+        private readonly static ConcurrentDictionary<int, IPAddress> _userIpMap;
+
+        static UserService()
+        {
+            _userIpMap = new ConcurrentDictionary<int, IPAddress>();
+        }
+
         public UserService(ef.HolePunchContext context, IServiceProvider sp)
         {
             _context = context;
@@ -85,5 +94,18 @@ namespace HolePunch.Accesses.Domain
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<IPAddress> GetUserIP(int userId)
+        {
+            if (_userIpMap.TryGetValue(userId, out IPAddress ip))
+            {
+                return ip;
+            }
+            return null;
+        }
+
+        public async Task SetUserIP(int userId, IPAddress ipAddress)
+        {
+            _userIpMap[userId] = ipAddress;
+        }
     }
 }
