@@ -38,12 +38,23 @@ namespace HolePunch.Accesses.Domain
 
         public async Task<IEnumerable<User>> ListUser()
         {
-            return await _context.User.Select(ef.User.GetToDomainExpression()).ToArrayAsync();
+            var result = await _context.User.Select(ef.User.GetToDomainExpression()).ToArrayAsync();
+
+            foreach (var user in result)
+            {
+                user.CurrentIP = GetUserIP(user.Id)?.ToString();
+            }
+
+            return result;
         }
 
-        public Task<User> GetUser(int userId)
+        public async Task<User> GetUser(int userId)
         {
-            return _context.User.Where(x => x.Id == userId).Select(ef.User.GetToDomainExpression()).SingleOrDefaultAsync();
+            var user = await _context.User.Where(x => x.Id == userId).Select(ef.User.GetToDomainExpression()).SingleOrDefaultAsync();
+
+            user.CurrentIP = GetUserIP(user.Id)?.ToString();
+
+            return user;
         }
 
         public async Task<User> CreateUser(User user)
