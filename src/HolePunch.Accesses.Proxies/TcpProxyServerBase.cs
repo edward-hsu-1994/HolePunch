@@ -53,7 +53,7 @@ namespace HolePunch.Accesses.Proxies
 
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-            StartListenLoop(tcs);
+            _listenLoop = StartListenLoop(tcs);
 
             return tcs.Task;
         }
@@ -69,14 +69,14 @@ namespace HolePunch.Accesses.Proxies
             // update status
             _status = ProxyServerStatus.Closing;
 
-            // wait listen loop stop
-            _listenLoop.Wait();
-
             // stop listener
             _tcpListener.Stop();
 
             // clear listener
             _tcpListener = null;
+
+            // wait listen loop stop
+            _listenLoop.Wait();
 
             // disconnect all session then clear sessions collection
             return Task.WhenAll(_sessions.Values.Select(x => x.Disconnect()).ToArray())

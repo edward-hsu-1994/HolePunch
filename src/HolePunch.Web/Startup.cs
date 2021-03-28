@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HolePunch.Web
@@ -46,7 +47,10 @@ namespace HolePunch.Web
 
             services.AddOpenApiDocument();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(config =>
+            {
+                config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
