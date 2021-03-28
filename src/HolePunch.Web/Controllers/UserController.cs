@@ -101,5 +101,11 @@ namespace HolePunch.Web.Controllers
             return _userGroupService.RemoveUserGroupMember(userGroupId, userId);
         }
         #endregion
+
+        [HttpPut("{userId}/password")]
+        public Task ChangePassword(int userId, [FromBody] string password)
+        {
+            return _userService.UpdatePassword(userId, password);
+        }
     }
 }
