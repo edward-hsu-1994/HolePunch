@@ -363,3 +363,4 @@ FodyWeavers.xsd
 
 # Custom
 *.bak
+src/HolePunch.Web/appsettings.Development.json
