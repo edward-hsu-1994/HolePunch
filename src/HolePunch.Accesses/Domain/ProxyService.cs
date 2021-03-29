@@ -175,6 +175,14 @@ namespace HolePunch.Accesses.Domain
             }
 
             _serverIdMap[service.Id] = proxyServer.Id;
+            proxyServer.OnConnected += (sender) =>
+            {
+                Console.WriteLine("Connect");
+            };
+            proxyServer.OnDisconnected += (sender) =>
+            {
+                Console.WriteLine("Disconnect");
+            };
 
             if (proxyServer is FirewallTcpProxyServer fwProxyServer)
             {
@@ -309,14 +317,28 @@ namespace HolePunch.Accesses.Domain
                         break;
                     case ServiceAllowRuleTypes.USER:
                         var ip = await _userService.GetUserIP(rule.UserId.Value);
-                        result.Add(CIDRNotation.Parse(ip.Address.ToString() + "/" + (ip.GetAddressBytes().Length * 8)));
+                        if (ip == null) break;
+                        result.Add(CIDRNotation.Parse(ip.ToString() + "/" + (ip.GetAddressBytes().Length * 8)));
+
+                        if (IPAddress.IsLoopback(ip))
+                        {
+                            result.Add(CIDRNotation.Parse("::1/128"));
+                            result.Add(CIDRNotation.Parse("127.0.0.1/32"));
+                        }
                         break;
                     case ServiceAllowRuleTypes.USER_GROUP:
                         var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
                         foreach (var user in userlist)
                         {
                             var userIp = await _userService.GetUserIP(rule.UserId.Value);
-                            result.Add(CIDRNotation.Parse(userIp.Address.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
+                            if (userIp == null) continue;
+                            result.Add(CIDRNotation.Parse(userIp.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
+
+                            if (IPAddress.IsLoopback(userIp))
+                            {
+                                result.Add(CIDRNotation.Parse("::1/128"));
+                                result.Add(CIDRNotation.Parse("127.0.0.1/32"));
+                            }
                         }
                         break;
                 }
