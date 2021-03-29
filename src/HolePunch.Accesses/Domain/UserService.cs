@@ -16,6 +16,7 @@ using XPY.ToolKit.Utilities.Cryptography;
 
 using ef = HolePunch.Accesses.Repositories;
 using System.Net;
+using HolePunch.Shared;
 
 namespace HolePunch.Accesses.Domain
 {
@@ -24,16 +25,18 @@ namespace HolePunch.Accesses.Domain
         private readonly ef.HolePunchContext _context;
         private readonly IServiceProvider _sp;
         private readonly static ConcurrentDictionary<int, IPAddress> _userIpMap;
+        private readonly JwtHelper<DefaultJwtTokenModel> _jwtHelper;
 
         static UserService()
         {
             _userIpMap = new ConcurrentDictionary<int, IPAddress>();
         }
 
-        public UserService(ef.HolePunchContext context, IServiceProvider sp)
+        public UserService(ef.HolePunchContext context, IServiceProvider sp, JwtHelper<DefaultJwtTokenModel> jwtHelper)
         {
             _context = context;
             _sp = sp;
+            _jwtHelper = jwtHelper;
         }
 
         public async Task<IEnumerable<User>> ListUser()
@@ -118,6 +121,28 @@ namespace HolePunch.Accesses.Domain
         {
             _userIpMap[userId] = ipAddress;
             await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
+        }
+
+
+        public async Task<string> LoginAndGenerateJwtToken(string account, string password)
+        {
+            var user = await VerifyPassword(account, password);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return "bearer " + _jwtHelper.EncodeJwt(new DefaultJwtTokenModel()
+            {
+                LoginId = Guid.NewGuid().ToString(),
+                Expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                TokenId = Guid.NewGuid().ToString(),
+                TokenType = "LOGIN",
+                UserAccount = account,
+                LoginProviderId = null,
+                UserId = user.Id.ToString(),
+                UserName = user.Name
+            });
         }
     }
 }

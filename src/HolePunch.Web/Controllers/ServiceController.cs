@@ -2,6 +2,7 @@
 using HolePunch.Proxies;
 using HolePunch.Services;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace HolePunch.Web.Controllers
 {
+    [Authorize(Policy = "Admin")]
     [ApiController]
     [Route("[controller]")]
     public class ServiceController : ControllerBase

@@ -20,5 +20,7 @@ namespace HolePunch.Services
 
         Task<IPAddress> GetUserIP(int userId);
         Task SetUserIP(int userId, IPAddress ipAddress);
+
+        Task<string> LoginAndGenerateJwtToken(string account, string password);
     }
 }

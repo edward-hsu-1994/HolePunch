@@ -1,7 +1,9 @@
 ﻿using HolePunch.Domain;
 using HolePunch.Proxies;
 using HolePunch.Services;
+using HolePunch.Web.Models;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace HolePunch.Web.Controllers
 {
+    [Authorize(Policy = "Admin")]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
@@ -106,6 +109,13 @@ namespace HolePunch.Web.Controllers
         public Task ChangePassword(int userId, [FromBody] string password)
         {
             return _userService.UpdatePassword(userId, password);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authorize")]
+        public async Task<string> Login([FromBody] LoginInputModel loginInput)
+        {
+            return await _userService.LoginAndGenerateJwtToken(loginInput.Account, loginInput.Password);
         }
     }
 }
