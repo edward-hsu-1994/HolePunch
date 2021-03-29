@@ -49,14 +49,21 @@ namespace HolePunch.Accesses.Proxies
             return _firewallRule.IsAllowed(httpContext);
         }
 
-        public Task UpdateAllowCidrList(IEnumerable<CIDRNotation> cidrs)
+        public async Task UpdateAllowCidrList(IEnumerable<CIDRNotation> cidrs)
         {
             _allow_cidrs = cidrs.ToArray().ToList();
 
-            return Task.WhenAll(
-                Sessions.Where(x => !VerifyIPEndPoint(x.ClientEndPoint.Address))
-                .Select(x => x.Disconnect())
-            );
+            foreach (var session in Sessions)
+            {
+                if (session.ClientEndPoint == null)
+                {
+                    continue;
+                }
+                if (!VerifyIPEndPoint(session.ClientEndPoint.Address))
+                {
+                    await session.Disconnect();
+                }
+            }
         }
     }
 }

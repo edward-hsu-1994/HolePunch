@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT" Version="8.1.3" />
     <PackageReference Include="XPY.ToolKit.Utilities" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HolePunch.Accesses.Proxies\HolePunch.Accesses.Proxies.csproj" />
     <ProjectReference Include="..\HolePunch.Accesses.Repositories\HolePunch.Accesses.Repositories.csproj" />
+    <ProjectReference Include="..\HolePunch.Shared\HolePunch.Shared.csproj" />
     <ProjectReference Include="..\HolePunch\HolePunch.csproj" />
   </ItemGroup>
 
