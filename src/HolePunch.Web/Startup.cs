@@ -3,6 +3,8 @@ using HolePunch.Accesses.Domain;
 using HolePunch.Accesses.Repositories;
 using HolePunch.Proxies;
 using HolePunch.Services;
+using HolePunch.Shared;
+using HolePunch.Web.Hubs;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,13 +41,22 @@ namespace HolePunch.Web
             services.AddScoped<IProxyService, ProxyService>();
             services.AddScoped<IUserGroupService, UserGroupService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthorizeService, AuthorizeService>();
+            services.AddScoped<ProxyService>();
 
             services.AddDbContext<HolePunchContext>(config =>
             {
                 config.UseNpgsql(Configuration.GetConnectionString("PG"));
             });
 
+            services.AddHttpContextAccessor();
             services.AddOpenApiDocument();
+            services.AddSignalR();
+
+            services.AddJwtHelper<DefaultJwtTokenModel>(
+                issuer: Configuration["JWT:Issuer"],
+                audience: Configuration["JWT:Audience"],
+                secureKey: Configuration["JWT:SecureKey"]);
 
             services.AddControllers().AddJsonOptions(config =>
             {
@@ -73,6 +84,7 @@ namespace HolePunch.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SessionHub>("/session");
             });
 
             app.UseOpenApi(); // serve documents (same as app.UseSwagger())
