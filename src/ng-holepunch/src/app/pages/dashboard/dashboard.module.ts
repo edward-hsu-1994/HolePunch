@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
 @NgModule({
   declarations: [MainframeComponent],
   imports: [
@@ -17,7 +19,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     DashboardRoutingModule,
     NzLayoutModule,
     NzMenuModule,
-    NzIconModule
+    NzIconModule,
+    NzButtonModule
   ]
 })
 export class DashboardModule { }
