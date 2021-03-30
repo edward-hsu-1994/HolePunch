@@ -364,3 +364,5 @@ FodyWeavers.xsd
 # Custom
 *.bak
 src/HolePunch.Web/appsettings.Development.json
+src/ng-holepunch/.vscode
+src/ng-holepunch/package-lock.json
