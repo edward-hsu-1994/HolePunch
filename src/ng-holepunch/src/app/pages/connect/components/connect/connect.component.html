@@ -1,9 +1,9 @@
 <div class="background">
   <div class="login-form">
     <nz-result
-      [nzIcon]="'share-alt'"
-      nzTitle="Successfully Connected To Server!"
-      nzSubTitle="Please keep this window."
+      [nzIcon]="icon"
+      [nzTitle]="statusTitle"
+      [nzSubTitle]="statusDesc"
     >
       <div nz-result-extra>
         <button nz-button nzType="primary" (click)="goToDashboard()" [hidden]="!isAdmin">Go Dashboard</button>

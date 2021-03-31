@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Service, ServiceService, UserService } from 'src/sdk';
-
+import * as signalR from "@microsoft/signalr";
+import { debug } from 'node:console';
 @Component({
   selector: 'app-connect',
   templateUrl: './connect.component.html',
@@ -13,17 +14,50 @@ export class ConnectComponent implements OnInit {
   isAdmin = false;
   showMyServices = false;
   services: Service[] = [];
+  static hubConnection: signalR.HubConnection;
+  icon = "api";
+
+  statusTitle  = "Connecting To Server";
+  statusDesc  = "Please waitting connecting.";
+
   constructor(
     private _modal: NzModalService,
-     private _router: Router,
-     private _userService: UserService,
-     private _serviceService: ServiceService,
-     private _message: NzMessageService,) { }
+    private _router: Router,
+    private _userService: UserService,
+    private _serviceService: ServiceService,
+    private _message: NzMessageService) {
+
+    if(!ConnectComponent.hubConnection){
+      ConnectComponent.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl('/session',{ accessTokenFactory: () => <string>sessionStorage.getItem('token') })
+        .withAutomaticReconnect()
+        .build();
+    }
+  }
 
   ngOnInit(): void {
     this._userService.isAdmin().subscribe(isAdmin=>{
       this.isAdmin = isAdmin;
     });
+
+    this.startSignalR();
+  }
+
+  startSignalR(){
+
+
+    ConnectComponent.hubConnection
+      .start()
+      .then(() => {
+        this.statusTitle = "Successfully Connected To Server!";
+        this.statusDesc = "Please keeping this window.";
+        this.icon = 'check-circle';
+      })
+      .catch(err => {
+        this.statusTitle = "Unsuccessfully Connected To Server!";
+        this.statusDesc = "Please relogin or check your network.";
+        this.icon = "close-circle";
+      });
   }
 
   goToDashboard(){
@@ -44,8 +78,10 @@ export class ConnectComponent implements OnInit {
       nzTitle: 'Do you Want to logout?',
       nzContent: 'When clicked the OK button, your connection will dispose.',
       nzOnOk: () =>{
-        sessionStorage.clear();
-        this._router.navigateByUrl('/');
+        ConnectComponent.hubConnection.stop().then(()=>{
+          sessionStorage.clear();
+          this._router.navigateByUrl('/');
+        });
       }
     });
   }
