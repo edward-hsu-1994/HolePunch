@@ -16,9 +16,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using NSwag.Generation.Processors.Security;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -50,7 +54,20 @@ namespace HolePunch.Web
             });
 
             services.AddHttpContextAccessor();
-            services.AddOpenApiDocument();
+            services.AddOpenApiDocument(config =>
+            {
+                config.Title = "HolePunch";
+                config.Version = "1.0.0";
+                config.DocumentProcessors.Add(new SecurityDefinitionAppender("apiKey", new NSwag.OpenApiSecurityScheme()
+                {
+                    Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = NSwag.OpenApiSecurityApiKeyLocation.Header,
+                    Description = "JWT(Bearer) 存取權杖"
+                }));
+                config.OperationProcessors.Add(new OperationSecurityScopeProcessor("apiKey"));
+            });
+
             services.AddSignalR();
 
             services.AddJwtHelper<DefaultJwtTokenModel>(
@@ -61,6 +78,13 @@ namespace HolePunch.Web
             services.AddControllers().AddJsonOptions(config =>
             {
                 config.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
+            services.AddAuthorization();
+
+            services.AddSpaStaticFiles(options =>
+            {
+                options.RootPath = "./wwwroot";
             });
         }
 
@@ -75,11 +99,23 @@ namespace HolePunch.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            #region Adding security headers
+            var policyCollection = new HeaderPolicyCollection()
+                .AddFrameOptionsDeny()
+                .AddXssProtectionBlock()
+                .AddContentTypeOptionsNoSniff()
+                .AddReferrerPolicyStrictOriginWhenCrossOrigin()
+                .RemoveServerHeader();
+
+            app.UseSecurityHeaders(policyCollection);
+            #endregion
+
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -89,6 +125,32 @@ namespace HolePunch.Web
 
             app.UseOpenApi(); // serve documents (same as app.UseSwagger())
             app.UseSwaggerUi3(); // serve Swagger UI
+
+
+            // 使用靜態檔案
+            app.UseStaticFiles();
+
+            // 使用SPA
+            app.UseSpaStaticFiles();
+
+            // SPA例外處理
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (Exception e)
+                {
+                    if (e is InvalidOperationException && e.Message.Contains("/index.html"))
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    }
+                }
+            });
+
+            // SPA設定
+            app.UseSpa(c => { });
         }
     }
 }

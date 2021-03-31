@@ -1,6 +1,7 @@
 ﻿using HolePunch.Domain;
 using HolePunch.Proxies;
 using HolePunch.Services;
+using HolePunch.Shared;
 using HolePunch.Web.Models;
 
 using Microsoft.AspNetCore.Authorization;
@@ -14,20 +15,21 @@ using System.Threading.Tasks;
 
 namespace HolePunch.Web.Controllers
 {
-    [Authorize(Policy = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<ServiceController> _logger;
         private readonly IUserService _userService;
         private readonly IUserGroupService _userGroupService;
-
-        public UserController(ILogger<ServiceController> logger, IUserService userService, IUserGroupService userGroupService)
+        private readonly JwtHelper<DefaultJwtTokenModel> _jwtHelper;
+        public UserController(ILogger<ServiceController> logger, IUserService userService, IUserGroupService userGroupService, JwtHelper<DefaultJwtTokenModel> jwtHelper)
         {
             _logger = logger;
             _userService = userService;
             _userGroupService = userGroupService;
+            _jwtHelper = jwtHelper;
         }
 
         [HttpGet]
@@ -104,6 +106,17 @@ namespace HolePunch.Web.Controllers
             return _userGroupService.RemoveUserGroupMember(userGroupId, userId);
         }
         #endregion
+
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPut("current/password")]
+        public Task ChangeCurrentUserPassword([FromBody] string password)
+        {
+            var tokenStr = this.Request.Headers["Authorization"][0];
+
+            var userId = int.Parse(_jwtHelper.DecodeJwt(tokenStr).UserId);
+            return _userService.UpdatePassword(userId, password);
+        }
 
         [HttpPut("{userId}/password")]
         public Task ChangePassword(int userId, [FromBody] string password)

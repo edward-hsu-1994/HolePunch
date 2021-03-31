@@ -132,16 +132,21 @@ namespace HolePunch.Accesses.Domain
                 return null;
             }
 
-            return "bearer " + _jwtHelper.EncodeJwt(new DefaultJwtTokenModel()
+            var isAdmin =
+                await _context.UserGroup.Where(x => x.IsAdmin).Select(x => x.Id)
+                .Intersect(_context.UserGroupMember.Where(x => x.UserId == user.Id)
+                .Select(x => x.UserGroupId)).AnyAsync();
+
+            return _jwtHelper.EncodeJwt(new DefaultJwtTokenModel()
             {
                 LoginId = Guid.NewGuid().ToString(),
-                Expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                Expiration = DateTimeOffset.UtcNow.AddDays(1).ToUnixTimeSeconds(),
                 TokenId = Guid.NewGuid().ToString(),
                 TokenType = "LOGIN",
                 UserAccount = account,
                 LoginProviderId = null,
                 UserId = user.Id.ToString(),
-                UserName = user.Name
+                Role = isAdmin ? "Admin" : "User"
             });
         }
     }

@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace HolePunch.Web.Controllers
 {
-    [Authorize(Policy = "Admin")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ServiceController : ControllerBase
     {
         private readonly ILogger<ServiceController> _logger;

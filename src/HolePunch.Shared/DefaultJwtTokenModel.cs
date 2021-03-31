@@ -47,11 +47,8 @@ namespace HolePunch.Shared
         [JsonPropertyName(ClaimTypes.NameIdentifier)]
         public string UserAccount { get; set; }
 
-        /// <summary>
-        /// 使用者名稱
-        /// </summary>
-        [JsonPropertyName(ClaimTypes.Name)]
-        public string UserName { get; set; }
+        [JsonPropertyName(ClaimsIdentity.DefaultRoleClaimType)]
+        public string Role { get; set; }
 
         /// <summary>
         /// 過期時間

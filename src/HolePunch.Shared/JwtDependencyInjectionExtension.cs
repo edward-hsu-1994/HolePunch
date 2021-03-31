@@ -28,7 +28,6 @@ namespace HolePunch.Shared
             {
                 options.IncludeErrorDetails = true;
                 options.SaveToken = true;
-
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     IssuerSigningKey = new SymmetricSecurityKey(secureKey.ToHash<SHA512>()),
