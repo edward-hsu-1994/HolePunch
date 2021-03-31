@@ -1,6 +1,7 @@
 ﻿using HolePunch.Domain;
 using HolePunch.Proxies;
 using HolePunch.Services;
+using HolePunch.Shared;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,22 +16,36 @@ namespace HolePunch.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class ServiceController : ControllerBase
     {
         private readonly ILogger<ServiceController> _logger;
         private readonly IProxyService _proxyService;
+        private readonly JwtHelper<DefaultJwtTokenModel> _jwtHelper;
 
-        public ServiceController(ILogger<ServiceController> logger, IProxyService proxyService)
+
+        public ServiceController(ILogger<ServiceController> logger, IProxyService proxyService, JwtHelper<DefaultJwtTokenModel> jwtHelper)
         {
             _logger = logger;
             _proxyService = proxyService;
+            _jwtHelper = jwtHelper;
         }
 
         [HttpGet]
         public Task<IEnumerable<Service>> ListService()
         {
             return _proxyService.ListService();
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("my")]
+        public async Task<IEnumerable<Service>> ListMyService()
+        {
+            var tokenStr = this.Request.Headers["Authorization"][0];
+
+            var userId = int.Parse(_jwtHelper.DecodeJwt(tokenStr).UserId);
+            return await _proxyService.ListMyService(userId);
         }
 
         [HttpGet("{serviceId}")]

@@ -15,6 +15,7 @@ namespace HolePunch.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class CidrGroupController : ControllerBase
     {

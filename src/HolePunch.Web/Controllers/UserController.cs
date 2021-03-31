@@ -17,6 +17,7 @@ namespace HolePunch.Web.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -107,7 +108,6 @@ namespace HolePunch.Web.Controllers
         }
         #endregion
 
-
         [Authorize(Roles = "Admin, User")]
         [HttpPut("current/password")]
         public Task ChangeCurrentUserPassword([FromBody] string password)
@@ -116,6 +116,16 @@ namespace HolePunch.Web.Controllers
 
             var userId = int.Parse(_jwtHelper.DecodeJwt(tokenStr).UserId);
             return _userService.UpdatePassword(userId, password);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet("isAdmin")]
+        public async Task<bool> IsAdmin()
+        {
+            var tokenStr = this.Request.Headers["Authorization"][0];
+
+            var role = _jwtHelper.DecodeJwt(tokenStr).Role;
+            return role == "Admin";
         }
 
         [HttpPut("{userId}/password")]

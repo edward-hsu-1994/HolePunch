@@ -96,8 +96,10 @@ namespace HolePunch.Shared
 
             try
             {
-                return builder.MustVerifySignature()
-                    .Decode<TJwtTokenModel>(token);
+                var json = builder.MustVerifySignature()
+                    .Decode(token);
+
+                return System.Text.Json.JsonSerializer.Deserialize<TJwtTokenModel>(json);
             }
             catch
             {

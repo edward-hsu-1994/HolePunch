@@ -54,6 +54,6 @@ namespace HolePunch.Shared
         /// 過期時間
         /// </summary>
         [JsonPropertyName("exp")]
-        public long? Expiration { get; set; }
+        public decimal Expiration { get; set; }
     }
 }

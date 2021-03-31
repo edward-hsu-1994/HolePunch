@@ -403,5 +403,29 @@ namespace HolePunch.Accesses.Domain
                 await StartProxyServer(service);
             }
         }
+
+        public async Task<IEnumerable<Service>> ListMyService(int userId)
+        {
+            var groupIds = _context.UserGroupMember.Where(x => x.UserId == userId).Select(x => x.UserGroupId);
+
+            var services0 = _context.ServiceAllowRule.Where(x => groupIds.Any(y => y == x.UserGroupId)).Select(x => x.ServiceId);
+            var services1 = _context.ServiceAllowRule.Where(x => x.UserId == userId).Select(x => x.ServiceId);
+
+            var services = await _context.Service.Where(x => services0.Any(y => y == x.Id) || services1.Any(y => y == x.Id))
+                .Select(ef.Service.GetToDomainExpression())
+                .ToArrayAsync();
+
+            foreach (var server in services)
+            {
+                if (_serverIdMap.TryGetValue(server.Id, out Guid serverId))
+                {
+                    var proxyServer = await _proxyServerHub.GetProxyServer(serverId);
+                    server.RealPort = proxyServer.ListenPort;
+                    server.Status = proxyServer.Status;
+                }
+            }
+
+            return services;
+        }
     }
 }
