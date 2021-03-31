@@ -8,6 +8,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { SdkModule } from 'src/sdk';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -19,7 +22,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     ReactiveFormsModule,
     NzInputModule,
     NzIconModule,
-    NzButtonModule
+    NzButtonModule,
+    NzMessageModule,
+    NzModalModule,
+    SdkModule
   ]
 })
 export class AuthorizationModule { }

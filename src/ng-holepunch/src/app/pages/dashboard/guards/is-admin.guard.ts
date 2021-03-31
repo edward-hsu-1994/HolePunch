@@ -20,4 +20,8 @@ export class IsAdminGuard implements CanActivate {
   goToLoginPanel(){
     this._router.navigateByUrl('/auth');
   }
+
+  goToConnectionPanel(){
+    this._router.navigateByUrl('/connect');
+  }
 }

@@ -8,7 +8,8 @@ import { zh_TW } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtHttpInterceptorService } from './services/jwt-http-interceptor.service';
 
 registerLocaleData(zh);
 
@@ -22,7 +23,14 @@ registerLocaleData(zh);
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_TW }],
+  providers: [
+    { provide: NZ_I18N, useValue: zh_TW },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtHttpInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

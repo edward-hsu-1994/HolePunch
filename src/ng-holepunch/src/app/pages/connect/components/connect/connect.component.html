@@ -1,0 +1,29 @@
+<div class="background">
+  <div class="login-form">
+    <nz-result
+      [nzIcon]="'share-alt'"
+      nzTitle="Successfully Connected To Server!"
+      nzSubTitle="Please keep this window."
+    >
+      <div nz-result-extra>
+        <button nz-button nzType="primary" (click)="goToDashboard()" [hidden]="!isAdmin">Go Dashboard</button>
+        <button nz-button (click)="openMyServices()">My Services</button>
+        <button nz-button nzType="primary" nzDanger (click)="logout()">Logout</button>
+      </div>
+    </nz-result>
+  </div>
+</div>
+<nz-modal
+  [nzVisible]="showMyServices"
+  nzTitle="My Services"
+  (nzOnCancel)="showMyServices=false"
+>
+  <div *nzModalContent>
+    <ul>
+      <li *ngFor="let service of services">{{service.name}}({{service.realPort}}/{{service.protocol}})</li>
+    </ul>
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="showMyServices=false"  >Close</button>
+  </div>
+</nz-modal>
