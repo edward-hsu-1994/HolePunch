@@ -10,6 +10,10 @@ const routes: Routes = [
     canActivate:[IsAdminGuard],
     children:[
       {
+        path: '',
+        redirectTo: 'services'
+      },
+      {
         path: 'services',
         loadChildren: () => import('./pages/service-manage/service-manage.module').then(m=>m.ServiceManageModule)
       },

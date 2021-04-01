@@ -15,7 +15,7 @@
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-menu-item nzMatchRouter>
         <i nz-icon nzType="swap" nzTheme="outline"></i>
-        <span><a routerLink="/services">Services Manage</a></span>
+        <span><a routerLink="/dashboard/services">Services Manage</a></span>
       </li>
 
       <li nz-submenu nzOpen nzTitle="System Manage" nzIcon="setting" nzTheme="outline">
@@ -24,7 +24,10 @@
             <a routerLink="/dashboard/system/connStatus"><i nz-icon nzType="share-alt" nzTheme="outline"></i>Connection Status</a>
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a><i nz-icon nzType="user" nzTheme="outline"></i>User Manage</a>
+            <a routerLink="/dashboard/system/user"><i nz-icon nzType="user" nzTheme="outline"></i>User Manage</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/dashboard/system/user-group"><i nz-icon nzType="team" nzTheme="outline"></i>User Group Manage</a>
           </li>
         </ul>
       </li>

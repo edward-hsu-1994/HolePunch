@@ -8,15 +8,30 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor.service';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { UserManageComponent } from './components/user-manage/user-manage.component';
+import { UserGroupManageComponent } from './components/user-group-manage/user-group-manage.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @NgModule({
-  declarations: [ConnectionStatusComponent],
+  declarations: [ConnectionStatusComponent, UserManageComponent, UserGroupManageComponent],
   imports: [
     CommonModule,
     SystemManageRoutingModule,
     SdkModule,
     NzListModule,
-    NzButtonModule
+    NzButtonModule,
+    NzModalModule,
+    NzMessageModule,
+    FormsModule,
+    NzFormModule,
+    ReactiveFormsModule,
+    NzInputModule,
+    NzIconModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

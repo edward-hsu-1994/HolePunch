@@ -86,6 +86,7 @@ export class ConnectComponent implements OnInit {
     this._userService.changeCurrentUserPassword({password: this.newPassword}).subscribe(()=>{
       this._message.remove(id);
       this._message.create('success', `Changed Password`);
+      this.newPassword = '';
       this.showChangePassword = false;
     })
   }

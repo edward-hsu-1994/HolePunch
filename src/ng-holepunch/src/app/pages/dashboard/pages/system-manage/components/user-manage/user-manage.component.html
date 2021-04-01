@@ -1,0 +1,58 @@
+<div style="margin-bottom: 8px;"><button nz-button (click)="showNewUser = true">Add User</button></div>
+<nz-list nzItemLayout="horizontal" [nzLoading]="loading">
+  <nz-list-item *ngFor="let user of users">
+    <nz-list-item-meta
+      [nzDescription]="user.account"
+    >
+      <nz-list-item-meta-title>
+        {{ user.name }}
+      </nz-list-item-meta-title>
+
+    </nz-list-item-meta>
+    <ul nz-list-item-actions>
+      <nz-list-item-action><a (click)="editUser(user)">Edit</a></nz-list-item-action>
+      <nz-list-item-action><a (click)="deleteUser(user)">Delete</a></nz-list-item-action>
+    </ul>
+  </nz-list-item>
+  <nz-list-empty *ngIf="users.length === 0"></nz-list-empty>
+</nz-list>
+<nz-modal [(nzVisible)]="showNewUser" nzTitle="Add User" (nzOnCancel)="showNewUser=false;createUserValidateForm.reset()" (nzOnOk)="createUser()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="createUserValidateForm" class="login-form" (ngSubmit)="createUser()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="account">Account</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid account!">
+          <input nz-input formControlName="account" id="account" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input password!">
+          <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+          <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+          <ng-template #errorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Please confirm password!
+            </ng-container>
+            <ng-container *ngIf="control.hasError('confirm')">
+              Two passwords that you enter is inconsistent!
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call you">
+          <span>Name</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input name!">
+          <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
