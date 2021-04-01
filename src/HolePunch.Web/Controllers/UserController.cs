@@ -110,12 +110,12 @@ namespace HolePunch.Web.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpPut("current/password")]
-        public Task ChangeCurrentUserPassword([FromBody] string password)
+        public Task ChangeCurrentUserPassword([FromBody] PasswordModel model)
         {
             var tokenStr = this.Request.Headers["Authorization"][0];
 
             var userId = int.Parse(_jwtHelper.DecodeJwt(tokenStr).UserId);
-            return _userService.UpdatePassword(userId, password);
+            return _userService.UpdatePassword(userId, model.Password);
         }
 
         [Authorize(Roles = "Admin, User")]
@@ -129,9 +129,9 @@ namespace HolePunch.Web.Controllers
         }
 
         [HttpPut("{userId}/password")]
-        public Task ChangePassword(int userId, [FromBody] string password)
+        public Task ChangePassword(int userId, [FromBody] PasswordModel model)
         {
-            return _userService.UpdatePassword(userId, password);
+            return _userService.UpdatePassword(userId, model.Password);
         }
 
         [AllowAnonymous]
