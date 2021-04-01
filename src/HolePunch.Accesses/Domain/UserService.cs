@@ -75,7 +75,7 @@ namespace HolePunch.Accesses.Domain
 
         public async Task<User> UpdateUser(User user)
         {
-            var instance = await GetUser(user.Id);
+            var instance = await _context.User.SingleOrDefaultAsync(x => x.Id == user.Id);
             instance.Account = user.Account;
             instance.Name = user.Name;
             instance.Enabled = user.Enabled;
@@ -84,7 +84,7 @@ namespace HolePunch.Accesses.Domain
 
             await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
 
-            return instance;
+            return instance.ToDomain();
         }
 
         public async Task DeleteUser(int userId)
