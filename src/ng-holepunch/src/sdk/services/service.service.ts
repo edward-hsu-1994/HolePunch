@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import {
   Service,
   ServiceAllowRule,
-  ServiceForwardTarget
+  ServiceForwardTarget,
+  ConnectionInfo
  } from '../models';
 
 @Injectable({
@@ -299,6 +300,16 @@ export class ServiceService {
 
   // #region Send Request
   return this.http.delete<void>(
+    url
+    );
+    // #endregion
+}
+
+  listConnections(): Observable<ConnectionInfo[]> {
+  const url = '/api/Service/connections';
+
+  // #region Send Request
+  return this.http.get<ConnectionInfo[]>(
     url
     );
     // #endregion
