@@ -10,7 +10,7 @@
 
     </nz-list-item-meta>
     <ul nz-list-item-actions>
-      <nz-list-item-action><a (click)="editUser(user)">Edit</a></nz-list-item-action>
+      <nz-list-item-action><a (click)="selectUserToEdit(user);showEditUser = true">Edit</a></nz-list-item-action>
       <nz-list-item-action><a (click)="changePasswordTargetUser = user;showChangePassword=true">Change Password</a></nz-list-item-action>
       <nz-list-item-action><a (click)="deleteUser(user)">Delete</a></nz-list-item-action>
     </ul>
@@ -30,7 +30,7 @@
   </ng-container>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="showNewUser" nzTitle="Add User" (nzOnCancel)="showNewUser=false;createUserValidateForm.reset()" (nzOnOk)="createUser()">
+<nz-modal [(nzVisible)]="showNewUser" nzTitle="Add User" (nzOnCancel)="showNewUser=false;createUserValidateForm.reset();selectedUserGroups=[]" (nzOnOk)="createUser()">
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="createUserValidateForm" class="login-form" (ngSubmit)="createUser()">
       <nz-form-item>
@@ -75,7 +75,51 @@
           <nz-select
             nzMode="multiple"
             nzPlaceHolder="Please select"
-            [(ngModel)]="createUserGroups"
+            [(ngModel)]="selectedUserGroups"
+            [ngModelOptions]="{standalone: true}">
+            <nz-option *ngFor="let group of userGroups" [nzLabel]="group.name || 'No Name'" [nzValue]="group.id"></nz-option>
+         </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="enabled">
+            <span>
+              Enabled
+            </span>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="showEditUser" nzTitle="Edit User" (nzOnCancel)="showEditUser=false;editUserValidateForm.reset();selectedUserGroups=[]" (nzOnOk)="editUser()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="editUserValidateForm" class="login-form" (ngSubmit)="editUser()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="account">Account</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid account!">
+          <input  nz-input formControlName="account" id="account"  />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call this account">
+          <span>Name</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input name!">
+          <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="groups" nzRequired nzTooltipTitle="User ACL groups">
+          <span>Groups</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please select user groups!">
+          <nz-select
+            nzMode="multiple"
+            nzPlaceHolder="Please select"
+            [(ngModel)]="selectedUserGroups"
             [ngModelOptions]="{standalone: true}">
             <nz-option *ngFor="let group of userGroups" [nzLabel]="group.name || 'No Name'" [nzValue]="group.id"></nz-option>
          </nz-select>

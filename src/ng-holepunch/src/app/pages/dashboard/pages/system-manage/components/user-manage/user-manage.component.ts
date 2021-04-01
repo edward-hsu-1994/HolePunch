@@ -16,18 +16,19 @@ export class UserManageComponent implements OnInit {
   newPassword = '';
   changePasswordTargetUser:any=null;
 
-
   loading=false;
 
   showNewUser= false;
+  showEditUser= false;
   createUserValidateForm!: FormGroup;
+  editUserValidateForm!: FormGroup;
 
 
 
 
   users: User[]=[];
   userGroups:UserGroup[]=[];
-  createUserGroups=[];
+  selectedUserGroups:number[]=[];
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
@@ -55,6 +56,14 @@ export class UserManageComponent implements OnInit {
       name: [null, [Validators.required]],
       enabled: [false]
     });
+    this.editUserValidateForm = this.fb.group({
+      id: [null, [Validators.required]],
+      account: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      enabled: [null],
+      groups: [null],
+      currentIP:[null]
+    });
   }
 
   loadUsers(){
@@ -71,7 +80,6 @@ export class UserManageComponent implements OnInit {
   }
 
   createUser(){
-    console.log(this.createUserGroups)
     for (const i in this.createUserValidateForm.controls) {
       this.createUserValidateForm.controls[i].markAsDirty();
       this.createUserValidateForm.controls[i].updateValueAndValidity();
@@ -88,13 +96,13 @@ export class UserManageComponent implements OnInit {
         createdUser = newUser;
         return this._userService.changePassword(<number>newUser.id , {password: this.createUserValidateForm.value.password})
       }))
-      .pipe(mergeMap(()=>this._userService.updateWhereUserGroup(createdUser.id, this.createUserGroups)))
+      .pipe(mergeMap(()=>this._userService.updateWhereUserGroup(createdUser.id, this.selectedUserGroups)))
       .subscribe(()=>{
         this._message.remove(id);
         this.loadUsers();
         this.showNewUser = false;
         this.createUserValidateForm.reset();
-        this.createUserGroups = [];
+        this.selectedUserGroups = [];
         this._message.success('User Created');
       });
   }
@@ -106,16 +114,41 @@ export class UserManageComponent implements OnInit {
 
 
 
+  selectUserToEdit(user:User){
+    this.editUserValidateForm.setValue(user);
+    this.editUserValidateForm.get('account')?.disable();
+    this.selectedUserGroups = user.groups?.map(x=><number>x.id) || [];
+  }
 
+  editUser(){
+    for (const i in this.editUserValidateForm.controls) {
+      this.editUserValidateForm.controls[i].markAsDirty();
+      this.editUserValidateForm.controls[i].updateValueAndValidity();
+    }
 
-  editUser(user:User){
+    if(this.editUserValidateForm.invalid){
+      return;
+    }
 
+    const id = this._message.loading('Updating User...', { nzDuration: 0 }).messageId;
+    this.editUserValidateForm.get('account')?.enable();
+
+    this._userService.updateUser(this.editUserValidateForm.value)
+      .pipe(mergeMap(()=>this._userService.updateWhereUserGroup(this.editUserValidateForm.value.id, this.selectedUserGroups)))
+      .subscribe(()=>{
+      this.loadUsers();
+      this.showEditUser = false;
+      this.editUserValidateForm.reset();
+      this.selectedUserGroups=[];
+      this._message.remove(id);
+      this._message.create('success', `Updated User`);
+    })
   }
 
 
   changeUserPassword(){
     if(!this.changePasswordTargetUser)return;
-    const id = this._message.loading('Changing Password...', { nzDuration: 0 }).messageId;
+    const id = this._message.loading('Changing Psassword...', { nzDuration: 0 }).messageId;
       this._userService.changePassword(this.changePasswordTargetUser.id,{password: this.newPassword}).subscribe(()=>{
         this._message.remove(id);
         this._message.create('success', `Changed Password`);
