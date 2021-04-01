@@ -1,34 +1,42 @@
 <div style="margin-bottom: 8px;"><button nz-button routerLink="../../list">Back</button></div>
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Name!">
-      <input nz-input formControlName="name" id="name" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="port" nzRequired>
-      <span>Port</span>
-    </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzRequired nzErrorTip="Please input service port!">
-      <input nz-input type="number" id="port" formControlName="port" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="logo">Logo URL</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input website!">
-      <input nz-input id="logo" formControlName="logo_url" placeholder="Logo URL" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="enabled">Enabled</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-switch formControlName="enabled"></nz-switch>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item nz-row class="register-area">
-    <nz-form-control [nzSpan]="14" [nzOffset]="6">
-      <button nz-button nzType="primary">Save</button>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<nz-tabset>
+  <nz-tab nzTitle="Properties">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Name!">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="port" nzRequired>
+          <span>Port</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzRequired nzErrorTip="Please input service port!">
+          <input nz-input type="number" id="port" formControlName="port" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="logo">Logo URL</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input website!">
+          <input nz-input id="logo" formControlName="logoUrl" placeholder="Logo URL" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="enabled">Enabled</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-switch formControlName="enabled"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary">Save</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-tab>
+  <nz-tab nzTitle="Allow Rules" [nzDisabled]="isNew">
+
+  </nz-tab>
+</nz-tabset>
+

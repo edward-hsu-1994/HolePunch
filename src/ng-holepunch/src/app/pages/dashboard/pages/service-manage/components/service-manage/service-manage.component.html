@@ -4,7 +4,7 @@
     <div nz-col [nzXXl]="8" [nzXl]="8" [nzLg]="8" [nzMd]="12" [nzSm]="12" [nzXs]="24"  *ngFor="let service of services">
       <nz-list-item>
         <nz-card [nzCover]="coverTemplate" [nzTitle]="service.name" [nzExtra]="extraTemplate" [nzActions]="[actionSetting,actionDelete]">
-          <nz-card-meta ></nz-card-meta>
+          <p style="padding: 0 20px;">Port: {{service.realPort}}</p>
         </nz-card>
         <ng-template #coverTemplate>
           <div class="logo" [ngStyle]="{ 'background-image': 'url(' + (service.logoUrl || '/assets/question.png') + ')'}" ></div>

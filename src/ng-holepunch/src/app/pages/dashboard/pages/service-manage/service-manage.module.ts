@@ -19,6 +19,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor.service';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { EditServiceComponent } from './components/edit-service/edit-service.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 @NgModule({
   declarations: [ServiceManageComponent, EditServiceComponent],
   imports: [
@@ -37,7 +38,8 @@ import { EditServiceComponent } from './components/edit-service/edit-service.com
     NzSelectModule,
     NzCheckboxModule,
     NzCardModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzTabsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
