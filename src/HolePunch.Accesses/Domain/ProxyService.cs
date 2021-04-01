@@ -307,41 +307,45 @@ namespace HolePunch.Accesses.Domain
 
             foreach (var rule in rules)
             {
-                switch (rule.Type)
+                try
                 {
-                    case ServiceAllowRuleTypes.CIDR:
-                        result.Add(CIDRNotation.Parse(rule.Cidr));
-                        break;
-                    case ServiceAllowRuleTypes.CIDR_GROUP:
-                        result.AddRange((await _cidrGroupService.GetCidrGroup(rule.CidrGroupId.Value)).CidrList.Select(CIDRNotation.Parse));
-                        break;
-                    case ServiceAllowRuleTypes.USER:
-                        var ip = await _userService.GetUserIP(rule.UserId.Value);
-                        if (ip == null) break;
-                        result.Add(CIDRNotation.Parse(ip.ToString() + "/" + (ip.GetAddressBytes().Length * 8)));
+                    switch (rule.Type)
+                    {
+                        case ServiceAllowRuleTypes.CIDR:
+                            result.Add(CIDRNotation.Parse(rule.Cidr));
+                            break;
+                        case ServiceAllowRuleTypes.CIDR_GROUP:
+                            result.AddRange((await _cidrGroupService.GetCidrGroup(rule.CidrGroupId.Value)).CidrList.Select(CIDRNotation.Parse));
+                            break;
+                        case ServiceAllowRuleTypes.USER:
+                            var ip = await _userService.GetUserIP(rule.UserId.Value);
+                            if (ip == null) break;
+                            result.Add(CIDRNotation.Parse(ip.ToString() + "/" + (ip.GetAddressBytes().Length * 8)));
 
-                        if (IPAddress.IsLoopback(ip))
-                        {
-                            result.Add(CIDRNotation.Parse("::1/128"));
-                            result.Add(CIDRNotation.Parse("127.0.0.1/32"));
-                        }
-                        break;
-                    case ServiceAllowRuleTypes.USER_GROUP:
-                        var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
-                        foreach (var user in userlist)
-                        {
-                            var userIp = await _userService.GetUserIP(rule.UserId.Value);
-                            if (userIp == null) continue;
-                            result.Add(CIDRNotation.Parse(userIp.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
-
-                            if (IPAddress.IsLoopback(userIp))
+                            if (IPAddress.IsLoopback(ip))
                             {
                                 result.Add(CIDRNotation.Parse("::1/128"));
                                 result.Add(CIDRNotation.Parse("127.0.0.1/32"));
                             }
-                        }
-                        break;
+                            break;
+                        case ServiceAllowRuleTypes.USER_GROUP:
+                            var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
+                            foreach (var user in userlist)
+                            {
+                                var userIp = await _userService.GetUserIP(rule.UserId.Value);
+                                if (userIp == null) continue;
+                                result.Add(CIDRNotation.Parse(userIp.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
+
+                                if (IPAddress.IsLoopback(userIp))
+                                {
+                                    result.Add(CIDRNotation.Parse("::1/128"));
+                                    result.Add(CIDRNotation.Parse("127.0.0.1/32"));
+                                }
+                            }
+                            break;
+                    }
                 }
+                catch { }
             }
 
             return result;
