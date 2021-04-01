@@ -1,1 +1,64 @@
-<p>user-group-manage works!</p>
+<div style="margin-bottom: 8px;"><button nz-button (click)="showNewUserGroup = true">Add User Group</button></div>
+<nz-list nzItemLayout="horizontal" [nzLoading]="loading">
+  <nz-list-item *ngFor="let group of userGroups">
+    <nz-list-item-meta>
+      <nz-list-item-meta-title>
+        {{ group.name }}
+      </nz-list-item-meta-title>
+
+    </nz-list-item-meta>
+    <ul nz-list-item-actions>
+      <nz-list-item-action><a (click)="selectUserGroupToEdit(group);showEditUserGroup = true">Edit</a></nz-list-item-action>
+      <nz-list-item-action><a (click)="deleteUserGroup(group)">Delete</a></nz-list-item-action>
+    </ul>
+  </nz-list-item>
+  <nz-list-empty *ngIf="userGroups.length === 0"></nz-list-empty>
+</nz-list>
+
+<nz-modal [(nzVisible)]="showNewUserGroup" nzTitle="Add User" (nzOnCancel)="showNewUserGroup=false;createUserGroupValidateForm.reset();" (nzOnOk)="createUserGroup()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="createUserGroupValidateForm" class="login-form" (ngSubmit)="createUserGroup()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call this group">
+          <span>Name</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input name!">
+          <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="isAdmin">
+            <span>
+              Is Administrator Group
+            </span>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="showEditUserGroup" nzTitle="Edit User Group" (nzOnCancel)="showEditUserGroup=false;editUserGroupValidateForm.reset();" (nzOnOk)="editUserGroup()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="editUserGroupValidateForm" class="login-form" (ngSubmit)="editUserGroup()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call this account">
+          <span>Name</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input name!">
+          <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="isAdmin">
+            <span>
+              Is Administrator Group
+            </span>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

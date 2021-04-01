@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserGroupManageComponent } from './user-group-manage.component';
 
-describe('UserGroupManageComponent', () => {
+describe('UserManageComponent', () => {
   let component: UserGroupManageComponent;
   let fixture: ComponentFixture<UserGroupManageComponent>;
 
