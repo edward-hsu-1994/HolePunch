@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { User, UserService } from 'src/sdk';
-import { map, pluck, take, mapTo, tap } from 'rxjs/operators';
+import { User, UserService,UserGroup } from 'src/sdk';
+import { map, pluck, take, mapTo, tap,mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-manage',
@@ -11,15 +11,23 @@ import { map, pluck, take, mapTo, tap } from 'rxjs/operators';
   styleUrls: ['./user-manage.component.scss']
 })
 export class UserManageComponent implements OnInit {
+  showChangePassword = false;
+  passwordVisible=false;
+  newPassword = '';
+  changePasswordTargetUser:any=null;
+
+
   loading=false;
 
   showNewUser= false;
   createUserValidateForm!: FormGroup;
 
 
+
+
   users: User[]=[];
-
-
+  userGroups:UserGroup[]=[];
+  createUserGroups=[];
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
@@ -29,18 +37,23 @@ export class UserManageComponent implements OnInit {
     }
     return {};
   };
-  constructor(private _userService: UserService, private _modal: NzModalService,private _message: NzMessageService,private fb: FormBuilder) {
+  constructor(
+    private _userService: UserService,
+    private _modal: NzModalService,
+    private _message: NzMessageService,
+    private fb: FormBuilder) {
 
   }
 
   ngOnInit(): void {
     this.loadUsers();
-
+    this.loadGroups();
     this.createUserValidateForm = this.fb.group({
       account: [null, [Validators.required]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      name: [null, [Validators.required]]
+      name: [null, [Validators.required]],
+      enabled: [false]
     });
   }
 
@@ -51,8 +64,14 @@ export class UserManageComponent implements OnInit {
       this.loading = false;
     });
   }
+  loadGroups(){
+    this._userService.listUserGroup().subscribe(groups=>{
+      this.userGroups = groups;
+    });
+  }
 
   createUser(){
+    console.log(this.createUserGroups)
     for (const i in this.createUserValidateForm.controls) {
       this.createUserValidateForm.controls[i].markAsDirty();
       this.createUserValidateForm.controls[i].updateValueAndValidity();
@@ -62,12 +81,20 @@ export class UserManageComponent implements OnInit {
       return;
     }
 
+    const id = this._message.loading('Creating User...', { nzDuration: 0 }).messageId;
+    var createdUser:any=null;
     this._userService.createUser(this.createUserValidateForm.value)
-      .pipe(mapTo((newUser:User)=>this._userService.changePassword(<number>newUser.id , {password: this.createUserValidateForm.value.password})))
-      .subscribe(newUser=>{
+      .pipe(mergeMap((newUser:User)=>{
+        createdUser = newUser;
+        return this._userService.changePassword(<number>newUser.id , {password: this.createUserValidateForm.value.password})
+      }))
+      .pipe(mergeMap(()=>this._userService.updateWhereUserGroup(createdUser.id, this.createUserGroups)))
+      .subscribe(()=>{
+        this._message.remove(id);
         this.loadUsers();
         this.showNewUser = false;
         this.createUserValidateForm.reset();
+        this.createUserGroups = [];
         this._message.success('User Created');
       });
   }
@@ -85,9 +112,21 @@ export class UserManageComponent implements OnInit {
 
   }
 
+
+  changeUserPassword(){
+    if(!this.changePasswordTargetUser)return;
+    const id = this._message.loading('Changing Password...', { nzDuration: 0 }).messageId;
+      this._userService.changePassword(this.changePasswordTargetUser.id,{password: this.newPassword}).subscribe(()=>{
+        this._message.remove(id);
+        this._message.create('success', `Changed Password`);
+        this.newPassword = '';
+        this.showChangePassword = false;
+    });
+  }
+
   deleteUser(user:User){
     this._modal.confirm({
-      nzTitle: `Do you Want to delete this user (${user.name}))?`,
+      nzTitle: `Do you Want to delete this user (${user.name})?`,
       nzContent: 'When clicked the OK button, this user will be deleted.',
       nzOnOk: () =>{
         this._userService.deleteUser(<number>user.id).subscribe(()=>{

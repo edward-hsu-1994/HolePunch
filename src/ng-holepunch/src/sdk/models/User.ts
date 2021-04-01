@@ -1,3 +1,4 @@
+import {UserGroup} from './UserGroup';
 
 export interface User {
 
@@ -10,5 +11,7 @@ export interface User {
   enabled?: boolean;
 
   currentIP?: string;
+
+  groups?: UserGroup[];
 
 }

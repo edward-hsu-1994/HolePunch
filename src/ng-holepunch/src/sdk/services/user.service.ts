@@ -151,6 +151,22 @@ export class UserService {
     // #endregion
 }
 
+  listUserGroupMember(
+    userGroupId: number
+  ): Observable<User[]> {
+  let url = '/api/User/groups/{userGroupId}/member';
+
+  // #region Path Parameter Name: userGroupId
+  url = url.replace('{userGroupId}', userGroupId.toString());
+  // #endregion
+
+  // #region Send Request
+  return this.http.get<User[]>(
+    url
+    );
+    // #endregion
+}
+
   addUserGroupMember(
     userGroupId: number,
     userId: number
@@ -191,6 +207,24 @@ export class UserService {
     url
     );
     // #endregion
+}
+
+  updateWhereUserGroup(
+    userId: number,
+    groups: number[]
+  ): Observable<void> {
+  let url = '/api/User/{userId}/groups';
+
+  // #region Path Parameter Name: userId
+  url = url.replace('{userId}', userId.toString());
+  // #endregion
+
+  // #region Send Request
+  return this.http.put<void>(
+    url,
+    groups
+  );
+  // #endregion
 }
 
   changeCurrentUserPassword(

@@ -16,7 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 @NgModule({
   declarations: [ConnectionStatusComponent, UserManageComponent, UserGroupManageComponent],
   imports: [
@@ -32,6 +33,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     ReactiveFormsModule,
     NzInputModule,
     NzIconModule,
+    NzSelectModule,
+    NzCheckboxModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

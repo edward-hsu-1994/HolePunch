@@ -11,11 +11,25 @@
     </nz-list-item-meta>
     <ul nz-list-item-actions>
       <nz-list-item-action><a (click)="editUser(user)">Edit</a></nz-list-item-action>
+      <nz-list-item-action><a (click)="changePasswordTargetUser = user;showChangePassword=true">Change Password</a></nz-list-item-action>
       <nz-list-item-action><a (click)="deleteUser(user)">Delete</a></nz-list-item-action>
     </ul>
   </nz-list-item>
   <nz-list-empty *ngIf="users.length === 0"></nz-list-empty>
 </nz-list>
+
+<nz-modal [(nzVisible)]="showChangePassword" nzTitle="Change Password" (nzOnCancel)="showChangePassword=false" (nzOnOk)="changeUserPassword()">
+  <ng-container *nzModalContent>
+    User Account: {{changePasswordTargetUser.account}}
+    <nz-input-group [nzSuffix]="suffixTemplate">
+      <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="input password" [(ngModel)]="newPassword" />
+    </nz-input-group>
+    <ng-template #suffixTemplate>
+      <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+    </ng-template>
+  </ng-container>
+</nz-modal>
+
 <nz-modal [(nzVisible)]="showNewUser" nzTitle="Add User" (nzOnCancel)="showNewUser=false;createUserValidateForm.reset()" (nzOnOk)="createUser()">
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="createUserValidateForm" class="login-form" (ngSubmit)="createUser()">
@@ -46,11 +60,34 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call you">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired nzTooltipTitle="What do you want other to call this account">
           <span>Name</span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input name!">
           <input nz-input id="name" formControlName="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="groups" nzRequired nzTooltipTitle="User ACL groups">
+          <span>Groups</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please select user groups!">
+          <nz-select
+            nzMode="multiple"
+            nzPlaceHolder="Please select"
+            [(ngModel)]="createUserGroups"
+            [ngModelOptions]="{standalone: true}">
+            <nz-option *ngFor="let group of userGroups" [nzLabel]="group.name || 'No Name'" [nzValue]="group.id"></nz-option>
+         </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="enabled">
+            <span>
+              Enabled
+            </span>
+          </label>
         </nz-form-control>
       </nz-form-item>
     </form>
