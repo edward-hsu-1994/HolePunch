@@ -1,1 +1,17 @@
-<p *ngFor="let conn of connections">{{conn.serviceName}} - {{conn.sourceEndPoint}}=>{{conn.targetEndPoint}}</p>
+<div style="margin-bottom: 8px;"><button nz-button (click)="loadConnections()">Reflash List</button></div>
+<nz-list nzItemLayout="horizontal" [nzLoading]="loading">
+  <nz-list-item *ngFor="let connection of connections">
+    <nz-list-item-meta
+      [nzDescription]="getDiscription(connection)"
+    >
+      <nz-list-item-meta-title>
+        {{ connection.serviceName }}
+      </nz-list-item-meta-title>
+
+    </nz-list-item-meta>
+    <!-- <ul nz-list-item-actions>
+      <nz-list-item-action><a (click)="disconnect(connection.sessionId)">Disconnect</a></nz-list-item-action>
+    </ul> -->
+  </nz-list-item>
+  <nz-list-empty *ngIf="connections.length === 0"></nz-list-empty>
+</nz-list>

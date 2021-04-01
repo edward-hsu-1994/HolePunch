@@ -6,7 +6,8 @@ import { ConnectionStatusComponent } from './components/connection-status/connec
 import { SdkModule } from 'src/sdk';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor.service';
-
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @NgModule({
   declarations: [ConnectionStatusComponent],
@@ -14,6 +15,8 @@ import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor
     CommonModule,
     SystemManageRoutingModule,
     SdkModule,
+    NzListModule,
+    NzButtonModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -4,6 +4,10 @@ import { ConnectionStatusComponent } from './components/connection-status/connec
 
 const routes: Routes = [
   {
+    path:'',
+    redirectTo: 'connStatus'
+  },
+  {
     path:'connStatus',
     component: ConnectionStatusComponent
   }
