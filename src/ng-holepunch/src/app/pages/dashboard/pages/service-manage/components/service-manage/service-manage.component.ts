@@ -23,10 +23,6 @@ export class ServiceManageComponent implements OnInit {
   }
 
 
-  gotoService(serviceId: any){
-    this._router.navigate([serviceId.toString()]);
-  }
-
   loadServices(){
     this.loading = true;
     this._serviceService.listService().subscribe(services=>{

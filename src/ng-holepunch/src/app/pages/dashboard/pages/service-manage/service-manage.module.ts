@@ -18,8 +18,9 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor.service';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { EditServiceComponent } from './components/edit-service/edit-service.component';
 @NgModule({
-  declarations: [ServiceManageComponent],
+  declarations: [ServiceManageComponent, EditServiceComponent],
   imports: [
     CommonModule,
     ServiceManageRoutingModule,
