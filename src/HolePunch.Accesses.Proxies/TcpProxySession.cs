@@ -49,6 +49,8 @@ namespace HolePunch.Accesses.Proxies
             {
                 try
                 {
+                    _status = ProxySessionStatus.Running;
+
                     var fromSourceStream = _client.GetStream();
                     var toTargetStream = _forwardClient.GetStream();
 
@@ -60,7 +62,9 @@ namespace HolePunch.Accesses.Proxies
                 catch
                 {
                     await Disconnect();
+                    return;
                 }
+                await Disconnect();
             });
 
             OnConnected?.Invoke(this);

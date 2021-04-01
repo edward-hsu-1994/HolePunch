@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HolePunch.Accesses
 {
@@ -30,6 +31,11 @@ namespace HolePunch.Accesses
                 return proxyServer;
             }
             return null;
+        }
+
+        public async Task<IEnumerable<IProxyServer>> ListProxyServer()
+        {
+            return _proxyServerDict.Values.ToArray();
         }
 
         public async Task RemoveProxyServer(Guid proxyServerId)

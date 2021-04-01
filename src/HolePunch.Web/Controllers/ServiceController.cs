@@ -135,5 +135,11 @@ namespace HolePunch.Web.Controllers
             return _proxyService.DeleteServiceForwardTarget(allowRuleId);
         }
         #endregion
+
+        [HttpGet("connections")]
+        public async Task<IEnumerable<ConnectionInfo>> ListConnections()
+        {
+            return await _proxyService.ListConnections();
+        }
     }
 }

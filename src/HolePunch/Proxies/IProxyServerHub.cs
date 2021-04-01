@@ -10,6 +10,7 @@ namespace HolePunch.Proxies
         Task AddProxyServer(IProxyServer proxyServer);
         Task<IProxyServer> GetProxyServer(Guid proxyServerId);
         Task RemoveProxyServer(Guid proxyServerId);
+        Task<IEnumerable<IProxyServer>> ListProxyServer();
 
     }
 }

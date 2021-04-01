@@ -29,5 +29,7 @@ namespace HolePunch.Services
         Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule);
         Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false);
         Task<IEnumerable<Service>> ListMyService(int userId);
+
+        Task<IEnumerable<ConnectionInfo>> ListConnections();
     }
 }

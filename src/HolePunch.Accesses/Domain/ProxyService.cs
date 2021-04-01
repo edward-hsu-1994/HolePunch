@@ -427,5 +427,30 @@ namespace HolePunch.Accesses.Domain
 
             return services;
         }
+
+        public async Task<IEnumerable<ConnectionInfo>> ListConnections()
+        {
+            var servers = await _proxyServerHub.ListProxyServer();
+            List<ConnectionInfo> result = new List<ConnectionInfo>();
+
+            foreach (var server in servers)
+            {
+                var serviceId = _serverIdMap.FirstOrDefault(x => x.Value == server.Id).Key;
+                var service = await GetService(serviceId);
+
+                result.AddRange(
+                    server.Sessions.Select(x => new ConnectionInfo()
+                    {
+                        ServiceId = service.Id,
+                        ServiceName = service.Name,
+                        SessionId = x.Id,
+                        SourceEndPoint = x.ClientEndPoint.ToString(),
+                        TargetEndPoint = x.ForwardEndPoint.ToString()
+                    }));
+            }
+
+            return result;
+        }
     }
 }
+;
