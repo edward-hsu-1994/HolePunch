@@ -7,7 +7,17 @@ const routes: Routes = [
   {
     path:'',
     component: MainframeComponent,
-    canActivate:[IsAdminGuard]
+    canActivate:[IsAdminGuard],
+    children:[
+      {
+        path: 'services',
+        loadChildren: () => import('./pages/service-manage/service-manage.module').then(m=>m.ServiceManageModule)
+      },
+      {
+        path: 'system',
+        loadChildren: () => import('./pages/system-manage/system-manage.module').then(m=>m.SystemManageModule)
+      }
+    ]
   }
 ];
 
