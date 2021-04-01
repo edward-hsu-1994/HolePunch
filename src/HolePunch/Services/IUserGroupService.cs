@@ -18,5 +18,6 @@ namespace HolePunch.Services
         Task<IEnumerable<User>> ListUserGroupMember(int userGroupId);
         Task AddUserGroupMember(int userGroupId, int userId);
         Task RemoveUserGroupMember(int userGroupId, int userId);
+        Task UpdateWhereUserGroup(int userId, int[] groups);
     }
 }

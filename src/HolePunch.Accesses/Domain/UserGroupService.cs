@@ -88,5 +88,17 @@ namespace HolePunch.Accesses.Domain
             await _context.SaveChangesAsync();
             await _sp.GetService<ProxyService>().ReflashAllProxyServerAllowRules();
         }
+
+        public async Task UpdateWhereUserGroup(int userId, int[] groups)
+        {
+            _context.RemoveRange(_context.UserGroupMember.Where(x => x.UserId == userId));
+            await _context.SaveChangesAsync();
+            _context.UserGroupMember.AddRange(groups.Select(x => new ef.UserGroupMember()
+            {
+                UserId = userId,
+                UserGroupId = x
+            }));
+            await _context.SaveChangesAsync();
+        }
     }
 }

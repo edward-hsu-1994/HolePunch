@@ -95,6 +95,12 @@ namespace HolePunch.Web.Controllers
             return _userGroupService.DeleteUserGroup(userGroupId);
         }
 
+        [HttpGet("groups/{userGroupId}/member")]
+        public Task<IEnumerable<User>> ListUserGroupMember(int userGroupId)
+        {
+            return _userGroupService.ListUserGroupMember(userGroupId);
+        }
+
         [HttpPost("groups/{userGroupId}/member/{userId}")]
         public Task AddUserGroupMember(int userGroupId, int userId)
         {
@@ -105,6 +111,12 @@ namespace HolePunch.Web.Controllers
         public Task RemoveUserGroupMember(int userGroupId, int userId)
         {
             return _userGroupService.RemoveUserGroupMember(userGroupId, userId);
+        }
+
+        [HttpPut("{userId}/groups")]
+        public Task UpdateWhereUserGroup(int userId, [FromBody] int[] groups)
+        {
+            return _userGroupService.UpdateWhereUserGroup(userId, groups);
         }
         #endregion
 

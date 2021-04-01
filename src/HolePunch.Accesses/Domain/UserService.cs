@@ -45,7 +45,9 @@ namespace HolePunch.Accesses.Domain
 
             foreach (var user in result)
             {
-                user.CurrentIP = GetUserIP(user.Id)?.ToString();
+                user.CurrentIP = (await GetUserIP(user.Id))?.ToString();
+                user.Groups = await _context.UserGroup.Where(x => _context.UserGroupMember.Where(x => x.UserId == user.Id).Any(y => y.UserGroupId == x.Id))
+                .Select(ef.UserGroup.GetToDomainExpression()).ToArrayAsync();
             }
 
             return result;
@@ -56,6 +58,8 @@ namespace HolePunch.Accesses.Domain
             var user = await _context.User.Where(x => x.Id == userId).Select(ef.User.GetToDomainExpression()).SingleOrDefaultAsync();
 
             user.CurrentIP = GetUserIP(user.Id)?.ToString();
+            user.Groups = await _context.UserGroup.Where(x => _context.UserGroupMember.Where(x => x.UserId == userId).Any(y => y.UserGroupId == x.Id))
+                .Select(ef.UserGroup.GetToDomainExpression()).ToArrayAsync();
 
             return user;
         }

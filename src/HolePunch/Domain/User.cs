@@ -11,6 +11,7 @@ namespace HolePunch.Domain
         public string Name { get; set; }
         public bool Enabled { get; set; }
         public string CurrentIP { get; set; }
+        public UserGroup[] Groups { get; set; }
     }
 }
 
