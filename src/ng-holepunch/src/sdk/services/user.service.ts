@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   User,
   UserGroup,
+  PasswordModel,
   LoginInputModel
  } from '../models';
 
@@ -193,14 +194,14 @@ export class UserService {
 }
 
   changeCurrentUserPassword(
-    password: string
+    model: PasswordModel
   ): Observable<void> {
   const url = '/api/User/current/password';
 
   // #region Send Request
   return this.http.put<void>(
     url,
-    password
+    model
   );
   // #endregion
 }
@@ -217,7 +218,7 @@ export class UserService {
 
   changePassword(
     userId: number,
-    password: string
+    model: PasswordModel
   ): Observable<void> {
   let url = '/api/User/{userId}/password';
 
@@ -228,7 +229,7 @@ export class UserService {
   // #region Send Request
   return this.http.put<void>(
     url,
-    password
+    model
   );
   // #endregion
 }

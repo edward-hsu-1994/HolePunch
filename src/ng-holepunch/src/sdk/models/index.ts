@@ -5,4 +5,5 @@ export * from './ServiceForwardTarget';
 export * from './ConnectionInfo';
 export * from './User';
 export * from './UserGroup';
+export * from './PasswordModel';
 export * from './LoginInputModel';

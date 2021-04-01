@@ -17,7 +17,7 @@ export class UserChangePasswordResolve implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.userService.changePassword(
       route.data.userId || route.params.userId || route.queryParams.userId,
-      route.data.password || route.params.password || route.queryParams.password
+      route.data.model || route.params.model || route.queryParams.model
     );
   }
 }

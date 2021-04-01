@@ -11,10 +11,13 @@ import { SdkModule } from 'src/sdk';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtHttpInterceptorService } from 'src/app/services/jwt-http-interceptor.service';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
+import { FormsModule } from '@angular/forms';
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
@@ -30,6 +33,9 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     NzModalModule,
     SdkModule,
     NzMessageModule,
+    NzDropDownModule,
+    NzInputModule,
+    FormsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -13,6 +13,11 @@ import { debug } from 'node:console';
 export class ConnectComponent implements OnInit {
   isAdmin = false;
   showMyServices = false;
+  showChangePassword = false;
+
+  passwordVisible=false;
+
+  newPassword = '';
   services: Service[] = [];
   static hubConnection: signalR.HubConnection;
   icon = "api";
@@ -44,8 +49,6 @@ export class ConnectComponent implements OnInit {
   }
 
   startSignalR(){
-
-
     ConnectComponent.hubConnection
       .start()
       .then(() => {
@@ -65,11 +68,25 @@ export class ConnectComponent implements OnInit {
   }
 
   openMyServices(){
-    const id = this._message.loading('Loading..', { nzDuration: 0 }).messageId;
+    const id = this._message.loading('Loading...', { nzDuration: 0 }).messageId;
     this._serviceService.listMyService().subscribe(services=>{
       this._message.remove(id);
       this.services = services.filter(x=>x.enabled).filter(x=>x.status==='Running');
       this.showMyServices = true;
+    })
+  }
+
+  openChangePassword(){
+    this.showChangePassword=true;
+    this.newPassword='';
+  }
+
+  changePassword(){
+    const id = this._message.loading('Changing Password...', { nzDuration: 0 }).messageId;
+    this._userService.changeCurrentUserPassword({password: this.newPassword}).subscribe(()=>{
+      this._message.remove(id);
+      this._message.create('success', `Changed Password`);
+      this.showChangePassword = false;
     })
   }
 
