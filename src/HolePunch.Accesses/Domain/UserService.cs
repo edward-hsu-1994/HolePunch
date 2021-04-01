@@ -63,6 +63,7 @@ namespace HolePunch.Accesses.Domain
         public async Task<User> CreateUser(User user)
         {
             var instance = ef.User.FromDomain(user);
+            instance.Password = "";
             _context.User.Add(instance);
             await _context.SaveChangesAsync();
             return instance.ToDomain();
