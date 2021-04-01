@@ -1,1 +1,24 @@
-<p>service-manage works!</p>
+<div style="margin-bottom: 8px;"><button nz-button>Add Service</button></div>
+<nz-list nzGrid [nzLoading]="loading">
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzXXl]="8" [nzXl]="8" [nzLg]="8" [nzMd]="12" [nzSm]="12" [nzXs]="24"  *ngFor="let service of services">
+      <nz-list-item>
+        <nz-card [nzCover]="coverTemplate" [nzTitle]="service.name" [nzExtra]="extraTemplate" [nzActions]="[actionSetting,actionDelete]">
+          <nz-card-meta ></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <div class="logo" [ngStyle]="{ 'background-image': 'url(' + (service.logoUrl || '/assets/question.png') + ')'}" ></div>
+        </ng-template>
+        <ng-template #extraTemplate>
+          <nz-switch  [nzControl]="true" [(ngModel)]="service.enabled" (click)="service.enabled=!service.enabled;updateService(service)"   [nzLoading]="service.loading"></nz-switch>
+        </ng-template>
+        <ng-template #actionSetting>
+          <i nz-icon nzType="setting" (click)="gotoService(service.id)"></i>
+        </ng-template>
+        <ng-template #actionDelete>
+          <i nz-icon nzType="delete" (click)="deleteService(service)"></i>
+        </ng-template>
+      </nz-list-item>
+    </div>
+  </div>
+</nz-list>

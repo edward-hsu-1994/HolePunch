@@ -115,8 +115,10 @@ export class UserGroupManageComponent implements OnInit {
       nzTitle: `Do you Want to delete this user group (${userGroup.name})?`,
       nzContent: 'When clicked the OK button, this user group will be deleted.',
       nzOnOk: () =>{
+        const id = this._message.loading('Deleting User Group...', { nzDuration: 0 }).messageId;
         this._userService.deleteUserGroup(<number>userGroup.id).subscribe(()=>{
           this.loadGroups();
+          this._message.remove(id);
           this._message.success('User Group Deleted');
         });
       }

@@ -162,8 +162,10 @@ export class UserManageComponent implements OnInit {
       nzTitle: `Do you Want to delete this user (${user.name})?`,
       nzContent: 'When clicked the OK button, this user will be deleted.',
       nzOnOk: () =>{
+        const id = this._message.loading('Deleting User...', { nzDuration: 0 }).messageId;
         this._userService.deleteUser(<number>user.id).subscribe(()=>{
           this.loadUsers();
+          this._message.remove(id);
           this._message.success('User Deleted');
         });
       }
