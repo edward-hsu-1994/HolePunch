@@ -23,8 +23,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
+using XPY.ToolKit.Utilities.Cryptography;
 
 namespace HolePunch.Web
 {
@@ -89,8 +92,35 @@ namespace HolePunch.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IProxyService proxyService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HolePunchContext context, IProxyService proxyService)
         {
+            context.Database.Migrate();
+            if (!context.User.Any())
+            {
+                var user = new User()
+                {
+                    Account = "admin",
+                    Name = "Administrator",
+                    Password = "admin@holepunch".ToHashString<SHA1>(false),
+                    Enabled = true
+                };
+                var group = new UserGroup()
+                {
+                    Name = "Admins",
+                    IsAdmin = true
+                };
+                context.User.Add(user);
+                context.UserGroup.Add(group);
+                context.SaveChanges();
+
+                context.UserGroupMember.Add(new UserGroupMember()
+                {
+                    UserGroupId = group.Id,
+                    UserId = user.Id
+                });
+                context.SaveChanges();
+            }
+
             // booting all enabled services
             proxyService.InitialServices().Wait();
 
