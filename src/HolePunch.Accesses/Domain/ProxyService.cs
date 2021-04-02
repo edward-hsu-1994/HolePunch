@@ -332,7 +332,7 @@ namespace HolePunch.Accesses.Domain
                             var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
                             foreach (var user in userlist)
                             {
-                                var userIp = await _userService.GetUserIP(rule.UserId.Value);
+                                var userIp = await _userService.GetUserIP(user.Id);
                                 if (userIp == null) continue;
                                 result.Add(CIDRNotation.Parse(userIp.ToString() + "/" + (userIp.GetAddressBytes().Length * 8)));
 
@@ -353,11 +353,56 @@ namespace HolePunch.Accesses.Domain
 
         public async Task<IEnumerable<ServiceAllowRule>> ListServiceAllowRule(int serviceId, int? serviceForwardTargetId = null)
         {
-            return await _context.ServiceAllowRule.Where(x => x.ServiceId == serviceId).Select(ef.ServiceAllowRule.GetToDomainExpression()).ToArrayAsync();
+            var result = await _context.ServiceAllowRule.Where(x => x.ServiceId == serviceId).Select(ef.ServiceAllowRule.GetToDomainExpression()).ToArrayAsync();
+
+            foreach (var rule in result)
+            {
+                switch (rule.Type)
+                {
+                    case ServiceAllowRuleTypes.USER:
+                        var user = await _context.User.SingleOrDefaultAsync(x => x.Id == rule.UserId);
+                        rule.Delta = $"{user?.Name}({user?.Account})";
+                        break;
+                    case ServiceAllowRuleTypes.USER_GROUP:
+                        var userGroup = await _context.UserGroup.SingleOrDefaultAsync(x => x.Id == rule.UserGroupId);
+                        rule.Delta = $"{userGroup?.Name}";
+                        break;
+                    case ServiceAllowRuleTypes.CIDR:
+                        rule.Delta = $"{rule.Cidr}";
+                        break;
+                    case ServiceAllowRuleTypes.CIDR_GROUP:
+                        var cidrGroup = await _context.CidrGroup.SingleOrDefaultAsync(x => x.Id == rule.CidrGroupId);
+                        rule.Delta = $"{cidrGroup?.Name}";
+                        break;
+                }
+            }
+
+            return result;
         }
-        public Task<ServiceAllowRule> GetServiceAllowRule(int serviceAllowRuleId)
+        public async Task<ServiceAllowRule> GetServiceAllowRule(int serviceAllowRuleId)
         {
-            return _context.ServiceAllowRule.Where(x => x.Id == serviceAllowRuleId).Select(ef.ServiceAllowRule.GetToDomainExpression()).SingleOrDefaultAsync();
+            var rule = await _context.ServiceAllowRule.Where(x => x.Id == serviceAllowRuleId).Select(ef.ServiceAllowRule.GetToDomainExpression()).SingleOrDefaultAsync();
+
+            switch (rule.Type)
+            {
+                case ServiceAllowRuleTypes.USER:
+                    var user = await _context.User.SingleOrDefaultAsync(x => x.Id == rule.UserId);
+                    rule.Delta = $"{user?.Name}({user?.Account})";
+                    break;
+                case ServiceAllowRuleTypes.USER_GROUP:
+                    var userGroup = await _context.UserGroup.SingleOrDefaultAsync(x => x.Id == rule.UserGroupId);
+                    rule.Delta = $"{userGroup?.Name}";
+                    break;
+                case ServiceAllowRuleTypes.CIDR:
+                    rule.Delta = $"{rule.Cidr}";
+                    break;
+                case ServiceAllowRuleTypes.CIDR_GROUP:
+                    var cidrGroup = await _context.CidrGroup.SingleOrDefaultAsync(x => x.Id == rule.CidrGroupId);
+                    rule.Delta = $"{cidrGroup?.Name}";
+                    break;
+            }
+
+            return rule;
         }
         public async Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule)
         {
@@ -366,7 +411,7 @@ namespace HolePunch.Accesses.Domain
             await _context.SaveChangesAsync();
             await UpdateProxyServerAllowRules(await GetService(serviceAllowRule.ServiceId));
 
-            return instance.ToDomain();
+            return await GetServiceAllowRule(instance.Id);
         }
         public async Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule)
         {
@@ -381,7 +426,7 @@ namespace HolePunch.Accesses.Domain
 
             await UpdateProxyServerAllowRules(await GetService(serviceAllowRule.ServiceId));
 
-            return instance.ToDomain();
+            return await GetServiceAllowRule(instance.Id);
         }
         public async Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false)
         {
