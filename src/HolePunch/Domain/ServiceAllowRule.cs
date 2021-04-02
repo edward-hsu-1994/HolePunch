@@ -16,5 +16,7 @@ namespace HolePunch.Domain
         public string Cidr { get; set; }
         public int? UserGroupId { get; set; }
         public int? UserId { get; set; }
+
+        public string Delta { get; set; }
     }
 }
