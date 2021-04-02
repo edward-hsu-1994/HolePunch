@@ -50,7 +50,7 @@ namespace HolePunch.Web
 
             services.AddDbContext<HolePunchContext>(config =>
             {
-                config.UseNpgsql(Configuration.GetConnectionString("PG"));
+                config.UseNpgsql(Configuration["CONN_PG"] ?? Configuration.GetConnectionString("PG"));
             });
 
             services.AddHttpContextAccessor();
@@ -71,9 +71,9 @@ namespace HolePunch.Web
             services.AddSignalR();
 
             services.AddJwtHelper<DefaultJwtTokenModel>(
-                issuer: Configuration["JWT:Issuer"],
-                audience: Configuration["JWT:Audience"],
-                secureKey: Configuration["JWT:SecureKey"]);
+                issuer: Configuration["JWT_ISS"] ?? Configuration["JWT:Issuer"],
+                audience: Configuration["JWT_AUD"] ?? Configuration["JWT:Audience"],
+                secureKey: Configuration["JWT_SEC"] ?? Configuration["JWT:SecureKey"]);
 
             services.AddControllers().AddJsonOptions(config =>
             {
