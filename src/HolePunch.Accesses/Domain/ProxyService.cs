@@ -327,6 +327,14 @@ namespace HolePunch.Accesses.Domain
                                 result.Add(CIDRNotation.Parse("::1/128"));
                                 result.Add(CIDRNotation.Parse("127.0.0.1/32"));
                             }
+                            else
+                            {
+                                if (ip.IsIPv4MappedToIPv6)
+                                {
+                                    var ipv4 = ip.MapToIPv4();
+                                    result.Add(CIDRNotation.Parse(ipv4.ToString() + "/" + (ipv4.GetAddressBytes().Length * 8)));
+                                }
+                            }
                             break;
                         case ServiceAllowRuleTypes.USER_GROUP:
                             var userlist = await _userGroupService.ListUserGroupMember(rule.UserGroupId.Value);
@@ -340,6 +348,14 @@ namespace HolePunch.Accesses.Domain
                                 {
                                     result.Add(CIDRNotation.Parse("::1/128"));
                                     result.Add(CIDRNotation.Parse("127.0.0.1/32"));
+                                }
+                                else
+                                {
+                                    if (userIp.IsIPv4MappedToIPv6)
+                                    {
+                                        var ipv4 = userIp.MapToIPv4();
+                                        result.Add(CIDRNotation.Parse(ipv4.ToString() + "/" + (ipv4.GetAddressBytes().Length * 8)));
+                                    }
                                 }
                             }
                             break;
