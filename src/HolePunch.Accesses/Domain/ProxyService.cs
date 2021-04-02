@@ -177,11 +177,11 @@ namespace HolePunch.Accesses.Domain
             _serverIdMap[service.Id] = proxyServer.Id;
             proxyServer.OnConnected += (sender) =>
             {
-                Console.WriteLine("Connect");
+                Console.WriteLine($"Connect: {sender.ClientEndPoint.ToString()}");
             };
             proxyServer.OnDisconnected += (sender) =>
             {
-                Console.WriteLine("Disconnect");
+                Console.WriteLine($"Disconnect: {sender.ClientEndPoint.ToString()}");
             };
 
             if (proxyServer is FirewallTcpProxyServer fwProxyServer)
