@@ -37,6 +37,27 @@ export class ConnectComponent implements OnInit {
         .withUrl('/session',{ accessTokenFactory: () => <string>sessionStorage.getItem('token') })
         .withAutomaticReconnect()
         .build();
+
+      ConnectComponent.hubConnection
+        .onreconnecting(()=>{
+          this.statusTitle = "Reconnecting...";
+          this.statusDesc = "Please keeping this window.";
+          this.icon = 'exclamation-circle';
+        });
+
+      ConnectComponent.hubConnection
+        .onreconnected(()=>{
+          this.statusTitle = "Successfully Connected To Server!";
+          this.statusDesc = "Please keeping this window.";
+          this.icon = 'check-circle';
+        });
+
+      ConnectComponent.hubConnection
+        .onclose(()=>{
+          this.statusTitle = "Disconnected!";
+          this.statusDesc = "Please relogin or check your network.";
+          this.icon = "close-circle";
+        });
     }
   }
 
@@ -49,24 +70,9 @@ export class ConnectComponent implements OnInit {
   }
 
   startSignalR(){
-    ConnectComponent.hubConnection
-      .onreconnecting(()=>{
-        this.statusTitle = "Reconnecting To Server!";
-        this.statusDesc = "Please keeping this window.";
-        this.icon = 'exclamation-circle';
-      });
-    ConnectComponent.hubConnection
-      .onreconnected(()=>{
-        this.statusTitle = "Successfully Connected To Server!";
-        this.statusDesc = "Please keeping this window.";
-        this.icon = 'check-circle';
-      });
-    ConnectComponent.hubConnection
-      .onclose(()=>{
-        this.statusTitle = "Disconnected!";
-        this.statusDesc = "Please relogin or check your network.";
-        this.icon = "close-circle";
-      });
+    if(ConnectComponent.hubConnection.state !== signalR.HubConnectionState.Disconnected){
+      return;
+    }
     ConnectComponent.hubConnection
       .start()
       .then(() => {
