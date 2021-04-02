@@ -5421,6 +5421,12 @@ class ConnectComponent {
             this.icon = 'exclamation-circle';
         });
         ConnectComponent.hubConnection
+            .onreconnected(() => {
+            this.statusTitle = "Successfully Connected To Server!";
+            this.statusDesc = "Please keeping this window.";
+            this.icon = 'check-circle';
+        });
+        ConnectComponent.hubConnection
             .start()
             .then(() => {
             this.statusTitle = "Successfully Connected To Server!";
