@@ -50,6 +50,12 @@ export class ConnectComponent implements OnInit {
 
   startSignalR(){
     ConnectComponent.hubConnection
+      .onreconnecting(()=>{
+        this.statusTitle = "Reconnecting To Server!";
+        this.statusDesc = "Please keeping this window.";
+        this.icon = 'exclamation-circle';
+      });
+    ConnectComponent.hubConnection
       .start()
       .then(() => {
         this.statusTitle = "Successfully Connected To Server!";
