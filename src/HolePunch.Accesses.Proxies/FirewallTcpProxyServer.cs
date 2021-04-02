@@ -46,7 +46,20 @@ namespace HolePunch.Accesses.Proxies
             var httpContext = new DefaultHttpContext();
             httpContext.Connection.RemoteIpAddress = address;
 
-            return _firewallRule.IsAllowed(httpContext);
+            var result = _firewallRule.IsAllowed(httpContext);
+
+            if (result)
+            {
+                return true;
+            }
+
+            if (address.IsIPv4MappedToIPv6)
+            {
+                httpContext.Connection.RemoteIpAddress = address.MapToIPv4();
+                return _firewallRule.IsAllowed(httpContext);
+            }
+
+            return false;
         }
 
         public async Task UpdateAllowCidrList(IEnumerable<CIDRNotation> cidrs)
