@@ -32,9 +32,9 @@ namespace HolePunch.Web.Hubs
                 return;
             }
 
-            if (!context.Request.Headers.TryGetValue("access_token", out StringValues jwt))
+            if (!context.Request.Query.TryGetValue("access_token", out StringValues jwt))
             {
-                Console.WriteLine("SignalR Abort: No access_token Header");
+                Console.WriteLine("SignalR Abort: No access_token Query");
 
                 Context.Abort();
                 return;
@@ -60,7 +60,7 @@ namespace HolePunch.Web.Hubs
                 return;
             }
 
-            if (!context.Request.Headers.TryGetValue("access_token", out StringValues jwt))
+            if (!context.Request.Query.TryGetValue("access_token", out StringValues jwt))
             {
                 return;
             }
