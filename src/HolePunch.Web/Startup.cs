@@ -60,7 +60,7 @@ namespace HolePunch.Web
             services.AddOpenApiDocument(config =>
             {
                 config.Title = "HolePunch";
-                config.Version = "1.0.0";
+                config.Version = $"{ThisAssembly.Git.BaseTag}#{ThisAssembly.Git.Commit}"; ;
                 config.DocumentProcessors.Add(new SecurityDefinitionAppender("apiKey", new NSwag.OpenApiSecurityScheme()
                 {
                     Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
