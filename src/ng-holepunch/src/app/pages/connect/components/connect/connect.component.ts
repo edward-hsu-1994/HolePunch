@@ -62,6 +62,12 @@ export class ConnectComponent implements OnInit {
         this.icon = 'check-circle';
       });
     ConnectComponent.hubConnection
+      .onclose(()=>{
+        this.statusTitle = "Disconnected!";
+        this.statusDesc = "Please relogin or check your network.";
+        this.icon = "close-circle";
+      });
+    ConnectComponent.hubConnection
       .start()
       .then(() => {
         this.statusTitle = "Successfully Connected To Server!";
