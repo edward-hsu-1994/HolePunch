@@ -39,7 +39,7 @@ namespace HolePunch.Accesses.Proxies
             }
         }
 
-        private bool VerifyIPEndPoint(IPAddress address)
+        public bool VerifyIPEndPoint(IPAddress address)
         {
             InitFirewallRules();
 

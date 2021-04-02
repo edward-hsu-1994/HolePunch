@@ -45,7 +45,7 @@ namespace HolePunch.Web.Controllers
             var tokenStr = this.Request.Headers["Authorization"][0];
 
             var userId = int.Parse(_jwtHelper.DecodeJwt(tokenStr).UserId);
-            return await _proxyService.ListMyService(userId);
+            return await _proxyService.ListMyService(userId, HttpContext.Connection.RemoteIpAddress);
         }
 
         [HttpGet("{serviceId}")]

@@ -69,7 +69,7 @@ namespace HolePunch.Accesses.Domain
                 }
             }
 
-            return services;
+            return services.OrderBy(x => x.Id);
         }
 
         public async Task<Service> GetService(int serviceId)
@@ -377,7 +377,7 @@ namespace HolePunch.Accesses.Domain
                 }
             }
 
-            return result;
+            return result.OrderBy(x => x.Id);
         }
         public async Task<ServiceAllowRule> GetServiceAllowRule(int serviceAllowRuleId)
         {
@@ -453,7 +453,7 @@ namespace HolePunch.Accesses.Domain
             }
         }
 
-        public async Task<IEnumerable<Service>> ListMyService(int userId)
+        public async Task<IEnumerable<Service>> ListMyService(int userId, IPAddress currentIP)
         {
             var groupIds = _context.UserGroupMember.Where(x => x.UserId == userId).Select(x => x.UserGroupId);
 
@@ -462,19 +462,42 @@ namespace HolePunch.Accesses.Domain
 
             var services = await _context.Service.Where(x => services0.Any(y => y == x.Id) || services1.Any(y => y == x.Id))
                 .Select(ef.Service.GetToDomainExpression())
-                .ToArrayAsync();
+                .ToListAsync();
 
-            foreach (var server in services)
+            foreach (var service in services)
             {
-                if (_serverIdMap.TryGetValue(server.Id, out Guid serverId))
+                if (_serverIdMap.TryGetValue(service.Id, out Guid serverId))
                 {
                     var proxyServer = await _proxyServerHub.GetProxyServer(serverId);
-                    server.RealPort = proxyServer.ListenPort;
-                    server.Status = proxyServer.Status;
+                    service.RealPort = proxyServer.ListenPort;
+                    service.Status = proxyServer.Status;
                 }
             }
 
-            return services;
+            var all_services = await _context.Service.Select(ef.Service.GetToDomainExpression()).ToArrayAsync();
+            foreach (var service in all_services)
+            {
+                if (services.Any(x => x.Id == service.Id)) continue;
+                if (!service.Enabled) continue;
+
+                if (_serverIdMap.TryGetValue(service.Id, out Guid serverId))
+                {
+                    var proxyServer = await _proxyServerHub.GetProxyServer(serverId);
+
+                    if (proxyServer is FirewallTcpProxyServer fwProxyServer)
+                    {
+                        if (fwProxyServer.VerifyIPEndPoint(currentIP))
+                        {
+                            service.RealPort = proxyServer.ListenPort;
+                            service.Status = proxyServer.Status;
+
+                            services.Add(service);
+                        }
+                    }
+                }
+            }
+
+            return services.OrderBy(x => x.Id);
         }
 
         public async Task<IEnumerable<ConnectionInfo>> ListConnections()

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace HolePunch.Services
         Task<ServiceAllowRule> CreateServiceAllowRule(ServiceAllowRule serviceAllowRule);
         Task<ServiceAllowRule> UpdateServiceAllowRule(ServiceAllowRule serviceAllowRule);
         Task DeleteServiceAllowRule(int serviceAllowRuleId, bool passServerOperator = false);
-        Task<IEnumerable<Service>> ListMyService(int userId);
+        Task<IEnumerable<Service>> ListMyService(int userId, IPAddress currentIP);
 
         Task<IEnumerable<ConnectionInfo>> ListConnections();
     }
