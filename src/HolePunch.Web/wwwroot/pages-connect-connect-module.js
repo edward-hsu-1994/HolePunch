@@ -5397,9 +5397,6 @@ class ConnectComponent {
         this.passwordVisible = false;
         this.newPassword = '';
         this.services = [];
-        this.icon = "api";
-        this.statusTitle = "Connecting To Server";
-        this.statusDesc = "Please waitting connecting.";
         if (!ConnectComponent.hubConnection) {
             ConnectComponent.hubConnection = new _microsoft_signalr__WEBPACK_IMPORTED_MODULE_0__["HubConnectionBuilder"]()
                 .withUrl('/session', { accessTokenFactory: () => sessionStorage.getItem('token') })
@@ -5407,23 +5404,32 @@ class ConnectComponent {
                 .build();
             ConnectComponent.hubConnection
                 .onreconnecting(() => {
-                this.statusTitle = "Reconnecting...";
-                this.statusDesc = "Please keeping this window.";
-                this.icon = 'exclamation-circle';
+                ConnectComponent.statusTitle = "Reconnecting...";
+                ConnectComponent.statusDesc = "Please keeping this window.";
+                ConnectComponent.icon = 'exclamation-circle';
             });
             ConnectComponent.hubConnection
                 .onreconnected(() => {
-                this.statusTitle = "Successfully Connected To Server!";
-                this.statusDesc = "Please keeping this window.";
-                this.icon = 'check-circle';
+                ConnectComponent.statusTitle = "Successfully Connected To Server!";
+                ConnectComponent.statusDesc = "Please keeping this window.";
+                ConnectComponent.icon = 'check-circle';
             });
             ConnectComponent.hubConnection
                 .onclose(() => {
-                this.statusTitle = "Disconnected!";
-                this.statusDesc = "Please relogin or check your network.";
-                this.icon = "close-circle";
+                ConnectComponent.statusTitle = "Disconnected!";
+                ConnectComponent.statusDesc = "Please relogin or check your network.";
+                ConnectComponent.icon = "close-circle";
             });
         }
+    }
+    get icon_str() {
+        return ConnectComponent.icon;
+    }
+    get statusTitle_str() {
+        return ConnectComponent.statusTitle;
+    }
+    get statusDesc_str() {
+        return ConnectComponent.statusDesc;
     }
     ngOnInit() {
         this._userService.isAdmin().subscribe(isAdmin => {
@@ -5435,17 +5441,20 @@ class ConnectComponent {
         if (ConnectComponent.hubConnection.state !== _microsoft_signalr__WEBPACK_IMPORTED_MODULE_0__["HubConnectionState"].Disconnected) {
             return;
         }
+        ConnectComponent.statusTitle = "Connecting To Server...";
+        ConnectComponent.statusDesc = "Please keeping this window.";
+        ConnectComponent.icon = 'api';
         ConnectComponent.hubConnection
             .start()
             .then(() => {
-            this.statusTitle = "Successfully Connected To Server!";
-            this.statusDesc = "Please keeping this window.";
-            this.icon = 'check-circle';
+            ConnectComponent.statusTitle = "Successfully Connected To Server!";
+            ConnectComponent.statusDesc = "Please keeping this window.";
+            ConnectComponent.icon = 'check-circle';
         })
             .catch(err => {
-            this.statusTitle = "Unsuccessfully Connected To Server!";
-            this.statusDesc = "Please relogin or check your network.";
-            this.icon = "close-circle";
+            ConnectComponent.statusTitle = "Unsuccessfully Connected To Server!";
+            ConnectComponent.statusDesc = "Please relogin or check your network.";
+            ConnectComponent.icon = "close-circle";
             console.log(err);
         });
     }
@@ -5486,6 +5495,9 @@ class ConnectComponent {
         });
     }
 }
+ConnectComponent.icon = "api";
+ConnectComponent.statusTitle = "";
+ConnectComponent.statusDesc = "";
 ConnectComponent.ɵfac = function ConnectComponent_Factory(t) { return new (t || ConnectComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](ng_zorro_antd_modal__WEBPACK_IMPORTED_MODULE_2__["NzModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_sdk__WEBPACK_IMPORTED_MODULE_4__["UserService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_sdk__WEBPACK_IMPORTED_MODULE_4__["ServiceService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](ng_zorro_antd_message__WEBPACK_IMPORTED_MODULE_5__["NzMessageService"])); };
 ConnectComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: ConnectComponent, selectors: [["app-connect"]], decls: 23, vars: 7, consts: [[1, "background"], [1, "login-form"], [3, "nzIcon", "nzTitle", "nzSubTitle"], ["nz-result-extra", ""], ["nz-button", "", "nzType", "primary", 3, "hidden", "click"], ["nz-button", "", 3, "click"], ["nz-button", "", "nzType", "primary", "nzDanger", "", "nz-dropdown", "", 3, "nzDropdownMenu"], ["nz-icon", "", "nzType", "down"], ["menu", "nzDropdownMenu"], ["nz-menu", ""], ["nz-menu-item", "", 3, "click"], ["nzTitle", "My Services", 3, "nzVisible", "nzOnCancel"], [4, "nzModalContent"], [4, "nzModalFooter"], ["nzTitle", "Change Password", 3, "nzVisible", "nzVisibleChange", "nzOnCancel", "nzOnOk"], [4, "ngFor", "ngForOf"], ["nz-button", "", "nzType", "default", 3, "click"], [3, "nzSuffix"], ["nz-input", "", "placeholder", "input password", 3, "type", "ngModel", "ngModelChange"], ["suffixTemplate", ""], ["nz-icon", "", 3, "nzType", "click"]], template: function ConnectComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div", 0);
@@ -5532,7 +5544,7 @@ ConnectComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineC
     } if (rf & 2) {
         const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵreference"](12);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("nzIcon", ctx.icon)("nzTitle", ctx.statusTitle)("nzSubTitle", ctx.statusDesc);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("nzIcon", ctx.icon_str)("nzTitle", ctx.statusTitle_str)("nzSubTitle", ctx.statusDesc_str);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("hidden", !ctx.isAdmin);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](4);
