@@ -5405,6 +5405,24 @@ class ConnectComponent {
                 .withUrl('/session', { accessTokenFactory: () => sessionStorage.getItem('token') })
                 .withAutomaticReconnect()
                 .build();
+            ConnectComponent.hubConnection
+                .onreconnecting(() => {
+                this.statusTitle = "Reconnecting...";
+                this.statusDesc = "Please keeping this window.";
+                this.icon = 'exclamation-circle';
+            });
+            ConnectComponent.hubConnection
+                .onreconnected(() => {
+                this.statusTitle = "Successfully Connected To Server!";
+                this.statusDesc = "Please keeping this window.";
+                this.icon = 'check-circle';
+            });
+            ConnectComponent.hubConnection
+                .onclose(() => {
+                this.statusTitle = "Disconnected!";
+                this.statusDesc = "Please relogin or check your network.";
+                this.icon = "close-circle";
+            });
         }
     }
     ngOnInit() {
@@ -5414,24 +5432,9 @@ class ConnectComponent {
         this.startSignalR();
     }
     startSignalR() {
-        ConnectComponent.hubConnection
-            .onreconnecting(() => {
-            this.statusTitle = "Reconnecting To Server!";
-            this.statusDesc = "Please keeping this window.";
-            this.icon = 'exclamation-circle';
-        });
-        ConnectComponent.hubConnection
-            .onreconnected(() => {
-            this.statusTitle = "Successfully Connected To Server!";
-            this.statusDesc = "Please keeping this window.";
-            this.icon = 'check-circle';
-        });
-        ConnectComponent.hubConnection
-            .onclose(() => {
-            this.statusTitle = "Disconnected!";
-            this.statusDesc = "Please relogin or check your network.";
-            this.icon = "close-circle";
-        });
+        if (ConnectComponent.hubConnection.state !== _microsoft_signalr__WEBPACK_IMPORTED_MODULE_0__["HubConnectionState"].Disconnected) {
+            return;
+        }
         ConnectComponent.hubConnection
             .start()
             .then(() => {
