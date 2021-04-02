@@ -45,7 +45,15 @@ namespace HolePunch.Accesses.Proxies
 
             _forwardClient = new TcpClient();
 
-            await _forwardClient.ConnectAsync(_forwardEndPoint.Address, _forwardEndPoint.Port);
+            try
+            {
+                await _forwardClient.ConnectAsync(_forwardEndPoint.Address, _forwardEndPoint.Port);
+            }
+            catch
+            {
+                await Disconnect();
+                return;
+            }
 
             _ = Task.Run(async () =>
             {
@@ -76,11 +84,19 @@ namespace HolePunch.Accesses.Proxies
         {
             _status = ProxySessionStatus.Closing;
 
-            _client.Close();
-            _client.Dispose();
+            try
+            {
+                _client.Close();
+                _client.Dispose();
+            }
+            catch { }
 
-            _forwardClient.Close();
-            _forwardClient.Close();
+            try
+            {
+                _forwardClient.Close();
+                _forwardClient.Close();
+            }
+            catch { }
 
             _status = ProxySessionStatus.Shutdown;
 

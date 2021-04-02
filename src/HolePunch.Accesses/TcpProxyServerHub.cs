@@ -6,6 +6,8 @@ using System.Collections.Concurrent;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 
 namespace HolePunch.Accesses
 {
@@ -16,6 +18,29 @@ namespace HolePunch.Accesses
         public TcpProxyServerHub()
         {
             _proxyServerDict = new ConcurrentDictionary<Guid, IProxyServer>();
+
+            Observable.Interval(TimeSpan.FromSeconds(30))
+                .ObserveOn(Scheduler.Default)
+                .Subscribe(async (_) =>
+                {
+                    Console.WriteLine("Connection Clear Start...");
+                    var servers = await ListProxyServer();
+                    foreach (var server in servers.ToArray())
+                    {
+                        foreach (var session in server.Sessions.ToArray())
+                        {
+                            if (session.ClientEndPoint == null)
+                            {
+                                try
+                                {
+                                    await session.Disconnect();
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                    Console.WriteLine("Connection Clear Stop...");
+                });
         }
 
         public Task AddProxyServer(IProxyServer proxyServer)

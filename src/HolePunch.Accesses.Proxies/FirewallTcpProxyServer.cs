@@ -70,6 +70,7 @@ namespace HolePunch.Accesses.Proxies
             {
                 if (session.ClientEndPoint == null)
                 {
+                    await session.Disconnect();
                     continue;
                 }
                 if (!VerifyIPEndPoint(session.ClientEndPoint.Address))

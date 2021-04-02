@@ -532,8 +532,8 @@ namespace HolePunch.Accesses.Domain
                         ServiceId = service.Id,
                         ServiceName = service.Name,
                         SessionId = x.Id,
-                        SourceEndPoint = x.ClientEndPoint.ToString(),
-                        TargetEndPoint = x.ForwardEndPoint.ToString()
+                        SourceEndPoint = x.ClientEndPoint?.ToString(),
+                        TargetEndPoint = x.ForwardEndPoint?.ToString()
                     }));
             }
 
