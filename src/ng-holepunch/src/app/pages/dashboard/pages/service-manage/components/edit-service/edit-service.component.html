@@ -35,8 +35,115 @@
       </nz-form-item>
     </form>
   </nz-tab>
+  <nz-tab nzTitle="Forward Target" [nzDisabled]="isNew">
+    <form nz-form [formGroup]="validateTargetForm" (ngSubmit)="submitTargetForm()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Name!">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="logo">IP</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input IP!">
+          <input nz-input id="logo" formControlName="ipAddress" placeholder="Logo URL" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="port" nzRequired>
+          <span>Port</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzRequired nzErrorTip="Please input port!">
+          <input nz-input type="number" id="port" formControlName="port" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button nz-button nzType="primary">Save</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-tab>
   <nz-tab nzTitle="Allow Rules" [nzDisabled]="isNew">
+    <nz-button-group>
+      <button nz-button nzType="primary" (click)="showNewUserRule=true">Add User</button>
+      <button nz-button nzType="primary" (click)="showNewUserGroupRule=true">Add User Group</button>
+      <button nz-button nzType="primary" (click)="showNewCidrRule=true">Add CIDR</button>
+    </nz-button-group>
 
+    <nz-list class="demo-loadmore-list">
+      <nz-list-item *ngFor="let rule of allowRules">
+        <ng-container>
+          <nz-list-item-meta
+            [nzDescription]="rule.type"
+          >
+            <nz-list-item-meta-title>
+              {{ rule.delta }}
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+          <ul nz-list-item-actions>
+            <nz-list-item-action>
+              <a (click)="deleteAllowRule(rule)">Delete</a>
+            </nz-list-item-action>
+          </ul>
+        </ng-container>
+      </nz-list-item>
+    </nz-list>
   </nz-tab>
 </nz-tabset>
 
+
+
+
+
+<nz-modal [(nzVisible)]="showNewUserRule" nzTitle="Add User" (nzOnCancel)="showNewUserRule=false;createUserRuleValidateForm.reset();" (nzOnOk)="createUserRule()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="createUserRuleValidateForm" class="login-form" (ngSubmit)="createUserRule()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="user" nzRequired nzTooltipTitle="User">
+          <span>Group</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please select user!">
+          <nz-select id="user" nzShowSearch nzAllowClear nzPlaceHolder="Select user" formControlName="userId">
+            <nz-option *ngFor="let user of users" [nzLabel]="(user.name || '') + '(' + user.account + ')' " [nzValue]="user.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+
+
+<nz-modal [(nzVisible)]="showNewUserGroupRule" nzTitle="Add User Group" (nzOnCancel)="showNewUserGroupRule=false;createUserGroupRuleValidateForm.reset();" (nzOnOk)="createUserGroupRule()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="createUserGroupRuleValidateForm" class="login-form" (ngSubmit)="createUserGroupRule()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="group" nzRequired nzTooltipTitle="User ACL groups">
+          <span>Group</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please select user groups!">
+          <nz-select id="group" nzShowSearch nzAllowClear nzPlaceHolder="Select a group" formControlName="userGroupId">
+            <nz-option *ngFor="let group of groups" [nzLabel]="group.name || ''" [nzValue]="group.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="showNewCidrRule" nzTitle="Add CIDR" (nzOnCancel)="showNewCidrRule=false;createCidrRuleValidateForm.reset();" (nzOnOk)="createCidrRule()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="createCidrRuleValidateForm" class="login-form" (ngSubmit)="createCidrRule()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="cidr" nzRequired nzTooltipTitle="CIDR">
+          <span>CIDR</span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input CIDR!">
+          <input nz-input id="cidr" formControlName="cidr" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

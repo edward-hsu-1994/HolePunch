@@ -17,4 +17,6 @@ export interface ServiceAllowRule {
 
   userId?: number;
 
+  delta?: string;
+
 }

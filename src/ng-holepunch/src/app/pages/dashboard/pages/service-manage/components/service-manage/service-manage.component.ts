@@ -36,6 +36,7 @@ export class ServiceManageComponent implements OnInit {
     service.loading = true;
     this._serviceService.updateService(service).subscribe(service2=>{
       service.loading = false;
+      service.realPort = service2.realPort;
       this._message.remove(id);
       this._message.success('Service Updated');
     });
