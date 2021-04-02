@@ -78,6 +78,7 @@ export class ConnectComponent implements OnInit {
         this.statusTitle = "Unsuccessfully Connected To Server!";
         this.statusDesc = "Please relogin or check your network.";
         this.icon = "close-circle";
+        console.log(err);
       });
   }
 
