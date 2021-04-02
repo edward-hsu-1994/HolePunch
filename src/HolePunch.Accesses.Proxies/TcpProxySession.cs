@@ -16,6 +16,7 @@ namespace HolePunch.Accesses.Proxies
         private TcpClient _forwardClient;
 
         private IPEndPoint _forwardEndPoint;
+        private IPEndPoint _clientEndPoint;
         private ProxySessionStatus _status;
 
         public event Action<IProxySession> OnConnected;
@@ -27,10 +28,11 @@ namespace HolePunch.Accesses.Proxies
             Id = Guid.NewGuid();
             _forwardEndPoint = forwardEndPoint;
             _client = client;
+            _clientEndPoint = _client?.Client?.RemoteEndPoint as IPEndPoint;
         }
 
         public Guid Id { get; private set; }
-        public IPEndPoint ClientEndPoint => _client?.Client?.RemoteEndPoint as IPEndPoint;
+        public IPEndPoint ClientEndPoint => _clientEndPoint;
 
         public IPEndPoint ForwardEndPoint => _forwardEndPoint;
 
