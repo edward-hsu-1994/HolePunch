@@ -2,11 +2,13 @@
 using HolePunch.Shared;
 
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace HolePunch.Web.Hubs
@@ -15,11 +17,13 @@ namespace HolePunch.Web.Hubs
     {
         private readonly IUserService _userService;
         private readonly IAuthorizeService _authorizeService;
+        private readonly IConfiguration _configuration;
 
-        public SessionHub(IUserService userService, IAuthorizeService authorizeService)
+        public SessionHub(IConfiguration configuration, IUserService userService, IAuthorizeService authorizeService)
         {
             _userService = userService;
             _authorizeService = authorizeService;
+            _configuration = configuration;
         }
 
         public override async Task OnConnectedAsync()
@@ -48,8 +52,16 @@ namespace HolePunch.Web.Hubs
                 return;
             }
 
-            Console.WriteLine($"SET User IP={tokenModel.UserId}=>{context.Connection.RemoteIpAddress}");
-            await _userService.SetUserIP(int.Parse(tokenModel.UserId), context.Connection.RemoteIpAddress);
+            var ip = context.Connection.RemoteIpAddress;
+            var header = _configuration["FORWARD_HEADER"];
+            if (!string.IsNullOrWhiteSpace(header) &&
+                context.Request.Headers.TryGetValue(header, out StringValues headerValues))
+            {
+                ip = IPAddress.Parse(headerValues[0]);
+            }
+
+            Console.WriteLine($"SET User IP={tokenModel.UserId}=>{ip}");
+            await _userService.SetUserIP(int.Parse(tokenModel.UserId), ip);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
