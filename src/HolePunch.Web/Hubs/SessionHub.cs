@@ -27,23 +27,29 @@ namespace HolePunch.Web.Hubs
             var context = this.Context.GetHttpContext();
             if (context?.Connection?.RemoteIpAddress == null)
             {
+                Console.WriteLine("SignalR Abort: No IP Address");
                 Context.Abort();
                 return;
             }
-            /*
+
             if (!context.Request.Headers.TryGetValue("Authentication", out StringValues jwt))
             {
+                Console.WriteLine("SignalR Abort: No Authentication Header");
+
                 Context.Abort();
                 return;
             }
 
             if (!_authorizeService.VerifyJwt(jwt.ToString(), out DefaultJwtTokenModel tokenModel))
             {
+                Console.WriteLine("SignalR Abort: JWT Error");
+
                 Context.Abort();
                 return;
-            }*/
+            }
 
-            await _userService.SetUserIP(1, context.Connection.RemoteIpAddress);
+            Console.WriteLine($"SET User IP={tokenModel.UserId}=>{context.Connection.RemoteIpAddress}");
+            await _userService.SetUserIP(int.Parse(tokenModel.UserId), context.Connection.RemoteIpAddress);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -53,7 +59,7 @@ namespace HolePunch.Web.Hubs
             {
                 return;
             }
-            /*
+
             if (!context.Request.Headers.TryGetValue("Authentication", out StringValues jwt))
             {
                 return;
@@ -62,9 +68,10 @@ namespace HolePunch.Web.Hubs
             if (!_authorizeService.VerifyJwt(jwt.ToString(), out DefaultJwtTokenModel tokenModel))
             {
                 return;
-            }*/
+            }
 
-            await _userService.SetUserIP(1, null);
+            Console.WriteLine($"SET User IP={tokenModel.UserId}=>null");
+            await _userService.SetUserIP(int.Parse(tokenModel.UserId), null);
         }
     }
 }
