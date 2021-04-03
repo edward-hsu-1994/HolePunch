@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
-import { interval, Observable, timer } from 'rxjs';
+import { interval, Observable, Observer, Subscription, timer } from 'rxjs';
 import { SystemService } from 'src/sdk/services/system.service';
 
 @Component({
@@ -61,7 +61,7 @@ export class SystemStatusComponent implements OnInit, AfterViewInit, OnDestroy {
 
   network_in_chart!:echarts.ECharts;
   network_out_chart!:echarts.ECharts;
-
+  timer!:Subscription;
   constructor(private _systemService: SystemService) { }
 
 
@@ -75,12 +75,19 @@ export class SystemStatusComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.updateGauge();
 
-    interval(1000).subscribe(()=>{
+    this.timer = interval(1000).subscribe(()=>{
       this._systemService.getNetworkSpeed().subscribe((speed)=>{
         this.network_in.series[0].data[0].value = Math.ceil(<number>speed.in / 1000000);
         this.network_out.series[0].data[0].value = Math.ceil(<number>speed.out / 1000000);
         this.network_in.series[0].max = Math.ceil((<number>speed.maxIn / 1000000)/100)*100;
+        if(this.network_in.series[0].max == -1){
+          this.network_in.series[0].max = 1000
+        }
+
         this.network_out.series[0].max = Math.ceil((<number>speed.maxOut / 1000000)/100)*100;
+        if(this.network_out.series[0].max == -1){
+          this.network_out.series[0].max = 1000
+        }
         this.updateGauge();
       })
     })
@@ -99,6 +106,6 @@ export class SystemStatusComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+    this.timer?.unsubscribe();
   }
 }
