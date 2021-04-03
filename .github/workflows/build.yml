@@ -18,6 +18,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src/HolePunch.Web
+    - name: Download frontend dist
+      uses: actions/download-artifact@v2
+      with:
+        name: frontend-dist
+    - name: Move frontend dist to wwwroot
+      run: mv ./src/ng-holepunch/dist/ng-holepunch ./src/HolePunch.Web/wwwroot
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src/HolePunch.Web
@@ -36,10 +42,8 @@ jobs:
     - name: Build
       run: npm run build
       working-directory: ./src/ng-holepunch
-      
-  moveFrontend:
-    runs-on: ubuntu-latest
-    needs: [frontend]
-    steps:
-      - name: Move frontend files
-        run: mv ./src/ng-holepunch/dist/ng-holepunch ./src/HolePunch.Web/wwwroot
+    - name: Upload dist for backend
+      uses: actions/upload-artifact@v2
+      with:
+        name: frontend-dist
+        path: ./src/ng-holepunch/dist/ng-holepunch
