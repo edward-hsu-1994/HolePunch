@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   CidrGroupService,
   ServiceService,
+  SystemService,
   UserService
 } from './services';
 import {
@@ -29,6 +30,7 @@ import {
   ServiceGetServiceForwardTargetResolve,
   ServiceDeleteServiceForwardTargetResolve,
   ServiceListConnectionsResolve,
+  SystemGetNetworkSpeedResolve,
   UserListUserResolve,
   UserCreateUserResolve,
   UserUpdateUserResolve,
@@ -55,6 +57,7 @@ import {
   providers: [
     CidrGroupService,
     ServiceService,
+    SystemService,
     UserService,
     CidrGroupListCidrGroupResolve,
     CidrGroupCreateCidrGroupResolve,
@@ -78,6 +81,7 @@ import {
     ServiceGetServiceForwardTargetResolve,
     ServiceDeleteServiceForwardTargetResolve,
     ServiceListConnectionsResolve,
+    SystemGetNetworkSpeedResolve,
     UserListUserResolve,
     UserCreateUserResolve,
     UserUpdateUserResolve,

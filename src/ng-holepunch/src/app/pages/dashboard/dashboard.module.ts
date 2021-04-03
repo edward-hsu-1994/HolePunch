@@ -9,9 +9,11 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-
+import { SystemStatusComponent } from './components/system-status/system-status.component';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 @NgModule({
-  declarations: [MainframeComponent],
+  declarations: [MainframeComponent, SystemStatusComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -20,7 +22,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzLayoutModule,
     NzMenuModule,
     NzIconModule,
-    NzButtonModule
+    NzButtonModule,
+    NzGridModule,
+    NzDividerModule
   ]
 })
 export class DashboardModule { }

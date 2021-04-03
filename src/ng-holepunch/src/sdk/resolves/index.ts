@@ -20,6 +20,7 @@ export * from './serviceUpdateServiceForwardTargetResolve';
 export * from './serviceGetServiceForwardTargetResolve';
 export * from './serviceDeleteServiceForwardTargetResolve';
 export * from './serviceListConnectionsResolve';
+export * from './systemGetNetworkSpeedResolve';
 export * from './userListUserResolve';
 export * from './userCreateUserResolve';
 export * from './userUpdateUserResolve';

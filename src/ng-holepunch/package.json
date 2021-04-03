@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~11.2.7",
     "@angular/router": "~11.2.7",
     "@microsoft/signalr": "^5.0.4",
+    "echarts": "^5.0.2",
     "ng-zorro-antd": "^11.3.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

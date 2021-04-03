@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainframeComponent } from './components/mainframe/mainframe.component';
+import { SystemStatusComponent } from './components/system-status/system-status.component';
 import { IsAdminGuard } from './guards/is-admin.guard';
 
 const routes: Routes = [
@@ -11,7 +12,7 @@ const routes: Routes = [
     children:[
       {
         path: '',
-        redirectTo: 'services'
+        component: SystemStatusComponent
       },
       {
         path: 'services',
