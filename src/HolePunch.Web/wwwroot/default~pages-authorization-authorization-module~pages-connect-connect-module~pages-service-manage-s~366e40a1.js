@@ -1058,6 +1058,34 @@ ServiceCreateServiceResolve.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__[
 
 /***/ }),
 
+/***/ "LQXK":
+/*!**********************************************************!*\
+  !*** ./src/sdk/resolves/systemGetNetworkSpeedResolve.ts ***!
+  \**********************************************************/
+/*! exports provided: SystemGetNetworkSpeedResolve */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SystemGetNetworkSpeedResolve", function() { return SystemGetNetworkSpeedResolve; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services */ "vN9f");
+
+
+class SystemGetNetworkSpeedResolve {
+    constructor(systemService) {
+        this.systemService = systemService;
+    }
+    resolve(route, state) {
+        return this.systemService.getNetworkSpeed();
+    }
+}
+SystemGetNetworkSpeedResolve.ɵfac = function SystemGetNetworkSpeedResolve_Factory(t) { return new (t || SystemGetNetworkSpeedResolve)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_services__WEBPACK_IMPORTED_MODULE_1__["SystemService"])); };
+SystemGetNetworkSpeedResolve.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: SystemGetNetworkSpeedResolve, factory: SystemGetNetworkSpeedResolve.ɵfac, providedIn: 'root' });
+
+
+/***/ }),
+
 /***/ "Lm8/":
 /*!***************************************************!*\
   !*** ./src/sdk/resolves/userCreateUserResolve.ts ***!
@@ -1082,6 +1110,20 @@ class UserCreateUserResolve {
 }
 UserCreateUserResolve.ɵfac = function UserCreateUserResolve_Factory(t) { return new (t || UserCreateUserResolve)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_services__WEBPACK_IMPORTED_MODULE_1__["UserService"])); };
 UserCreateUserResolve.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserCreateUserResolve, factory: UserCreateUserResolve.ɵfac, providedIn: 'root' });
+
+
+/***/ }),
+
+/***/ "OgGP":
+/*!****************************************!*\
+  !*** ./src/sdk/models/NetworkSpeed.ts ***!
+  \****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
 
 
 /***/ }),
@@ -2559,7 +2601,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************!*\
   !*** ./src/sdk/resolves/index.ts ***!
   \***********************************/
-/*! exports provided: CidrGroupListCidrGroupResolve, CidrGroupCreateCidrGroupResolve, CidrGroupUpdateCidrGroupResolve, CidrGroupGetCidrGroupResolve, CidrGroupDeleteCidrGroupResolve, ServiceListServiceResolve, ServiceCreateServiceResolve, ServiceUpdateServiceResolve, ServiceListMyServiceResolve, ServiceGetServiceResolve, ServiceDeleteServiceResolve, ServiceListServiceAllowRuleResolve, ServiceCreateServiceAllowRuleResolve, ServiceUpdateServiceAllowRuleResolve, ServiceGetServiceAllowRuleResolve, ServiceDeleteServiceAllowRuleResolve, ServiceListServiceForwardTargetResolve, ServiceCreateServiceForwardTargetResolve, ServiceUpdateServiceForwardTargetResolve, ServiceGetServiceForwardTargetResolve, ServiceDeleteServiceForwardTargetResolve, ServiceListConnectionsResolve, UserListUserResolve, UserCreateUserResolve, UserUpdateUserResolve, UserGetUserResolve, UserDeleteUserResolve, UserListUserGroupResolve, UserCreateUserGroupResolve, UserUpdateUserGroupResolve, UserGetUserGroupResolve, UserDeleteUserGroupResolve, UserListUserGroupMemberResolve, UserAddUserGroupMemberResolve, UserRemoveUserGroupMemberResolve, UserUpdateWhereUserGroupResolve, UserChangeCurrentUserPasswordResolve, UserIsAdminResolve, UserChangePasswordResolve, UserLoginResolve */
+/*! exports provided: CidrGroupListCidrGroupResolve, CidrGroupCreateCidrGroupResolve, CidrGroupUpdateCidrGroupResolve, CidrGroupGetCidrGroupResolve, CidrGroupDeleteCidrGroupResolve, ServiceListServiceResolve, ServiceCreateServiceResolve, ServiceUpdateServiceResolve, ServiceListMyServiceResolve, ServiceGetServiceResolve, ServiceDeleteServiceResolve, ServiceListServiceAllowRuleResolve, ServiceCreateServiceAllowRuleResolve, ServiceUpdateServiceAllowRuleResolve, ServiceGetServiceAllowRuleResolve, ServiceDeleteServiceAllowRuleResolve, ServiceListServiceForwardTargetResolve, ServiceCreateServiceForwardTargetResolve, ServiceUpdateServiceForwardTargetResolve, ServiceGetServiceForwardTargetResolve, ServiceDeleteServiceForwardTargetResolve, ServiceListConnectionsResolve, SystemGetNetworkSpeedResolve, UserListUserResolve, UserCreateUserResolve, UserUpdateUserResolve, UserGetUserResolve, UserDeleteUserResolve, UserListUserGroupResolve, UserCreateUserGroupResolve, UserUpdateUserGroupResolve, UserGetUserGroupResolve, UserDeleteUserGroupResolve, UserListUserGroupMemberResolve, UserAddUserGroupMemberResolve, UserRemoveUserGroupMemberResolve, UserUpdateWhereUserGroupResolve, UserChangeCurrentUserPasswordResolve, UserIsAdminResolve, UserChangePasswordResolve, UserLoginResolve */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2630,59 +2672,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _serviceListConnectionsResolve__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./serviceListConnectionsResolve */ "9Ioo");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ServiceListConnectionsResolve", function() { return _serviceListConnectionsResolve__WEBPACK_IMPORTED_MODULE_21__["ServiceListConnectionsResolve"]; });
 
-/* harmony import */ var _userListUserResolve__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./userListUserResolve */ "Sed9");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserResolve", function() { return _userListUserResolve__WEBPACK_IMPORTED_MODULE_22__["UserListUserResolve"]; });
+/* harmony import */ var _systemGetNetworkSpeedResolve__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./systemGetNetworkSpeedResolve */ "LQXK");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SystemGetNetworkSpeedResolve", function() { return _systemGetNetworkSpeedResolve__WEBPACK_IMPORTED_MODULE_22__["SystemGetNetworkSpeedResolve"]; });
 
-/* harmony import */ var _userCreateUserResolve__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./userCreateUserResolve */ "Lm8/");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserCreateUserResolve", function() { return _userCreateUserResolve__WEBPACK_IMPORTED_MODULE_23__["UserCreateUserResolve"]; });
+/* harmony import */ var _userListUserResolve__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./userListUserResolve */ "Sed9");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserResolve", function() { return _userListUserResolve__WEBPACK_IMPORTED_MODULE_23__["UserListUserResolve"]; });
 
-/* harmony import */ var _userUpdateUserResolve__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./userUpdateUserResolve */ "mM2Z");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateUserResolve", function() { return _userUpdateUserResolve__WEBPACK_IMPORTED_MODULE_24__["UserUpdateUserResolve"]; });
+/* harmony import */ var _userCreateUserResolve__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./userCreateUserResolve */ "Lm8/");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserCreateUserResolve", function() { return _userCreateUserResolve__WEBPACK_IMPORTED_MODULE_24__["UserCreateUserResolve"]; });
 
-/* harmony import */ var _userGetUserResolve__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./userGetUserResolve */ "Te85");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserGetUserResolve", function() { return _userGetUserResolve__WEBPACK_IMPORTED_MODULE_25__["UserGetUserResolve"]; });
+/* harmony import */ var _userUpdateUserResolve__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./userUpdateUserResolve */ "mM2Z");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateUserResolve", function() { return _userUpdateUserResolve__WEBPACK_IMPORTED_MODULE_25__["UserUpdateUserResolve"]; });
 
-/* harmony import */ var _userDeleteUserResolve__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./userDeleteUserResolve */ "l/Di");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserDeleteUserResolve", function() { return _userDeleteUserResolve__WEBPACK_IMPORTED_MODULE_26__["UserDeleteUserResolve"]; });
+/* harmony import */ var _userGetUserResolve__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./userGetUserResolve */ "Te85");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserGetUserResolve", function() { return _userGetUserResolve__WEBPACK_IMPORTED_MODULE_26__["UserGetUserResolve"]; });
 
-/* harmony import */ var _userListUserGroupResolve__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./userListUserGroupResolve */ "zrtF");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserGroupResolve", function() { return _userListUserGroupResolve__WEBPACK_IMPORTED_MODULE_27__["UserListUserGroupResolve"]; });
+/* harmony import */ var _userDeleteUserResolve__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./userDeleteUserResolve */ "l/Di");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserDeleteUserResolve", function() { return _userDeleteUserResolve__WEBPACK_IMPORTED_MODULE_27__["UserDeleteUserResolve"]; });
 
-/* harmony import */ var _userCreateUserGroupResolve__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./userCreateUserGroupResolve */ "ySIB");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserCreateUserGroupResolve", function() { return _userCreateUserGroupResolve__WEBPACK_IMPORTED_MODULE_28__["UserCreateUserGroupResolve"]; });
+/* harmony import */ var _userListUserGroupResolve__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./userListUserGroupResolve */ "zrtF");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserGroupResolve", function() { return _userListUserGroupResolve__WEBPACK_IMPORTED_MODULE_28__["UserListUserGroupResolve"]; });
 
-/* harmony import */ var _userUpdateUserGroupResolve__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./userUpdateUserGroupResolve */ "wc6q");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateUserGroupResolve", function() { return _userUpdateUserGroupResolve__WEBPACK_IMPORTED_MODULE_29__["UserUpdateUserGroupResolve"]; });
+/* harmony import */ var _userCreateUserGroupResolve__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./userCreateUserGroupResolve */ "ySIB");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserCreateUserGroupResolve", function() { return _userCreateUserGroupResolve__WEBPACK_IMPORTED_MODULE_29__["UserCreateUserGroupResolve"]; });
 
-/* harmony import */ var _userGetUserGroupResolve__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./userGetUserGroupResolve */ "7t87");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserGetUserGroupResolve", function() { return _userGetUserGroupResolve__WEBPACK_IMPORTED_MODULE_30__["UserGetUserGroupResolve"]; });
+/* harmony import */ var _userUpdateUserGroupResolve__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./userUpdateUserGroupResolve */ "wc6q");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateUserGroupResolve", function() { return _userUpdateUserGroupResolve__WEBPACK_IMPORTED_MODULE_30__["UserUpdateUserGroupResolve"]; });
 
-/* harmony import */ var _userDeleteUserGroupResolve__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./userDeleteUserGroupResolve */ "Y4MB");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserDeleteUserGroupResolve", function() { return _userDeleteUserGroupResolve__WEBPACK_IMPORTED_MODULE_31__["UserDeleteUserGroupResolve"]; });
+/* harmony import */ var _userGetUserGroupResolve__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./userGetUserGroupResolve */ "7t87");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserGetUserGroupResolve", function() { return _userGetUserGroupResolve__WEBPACK_IMPORTED_MODULE_31__["UserGetUserGroupResolve"]; });
 
-/* harmony import */ var _userListUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./userListUserGroupMemberResolve */ "hdyJ");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserGroupMemberResolve", function() { return _userListUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_32__["UserListUserGroupMemberResolve"]; });
+/* harmony import */ var _userDeleteUserGroupResolve__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./userDeleteUserGroupResolve */ "Y4MB");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserDeleteUserGroupResolve", function() { return _userDeleteUserGroupResolve__WEBPACK_IMPORTED_MODULE_32__["UserDeleteUserGroupResolve"]; });
 
-/* harmony import */ var _userAddUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./userAddUserGroupMemberResolve */ "vLs0");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserAddUserGroupMemberResolve", function() { return _userAddUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_33__["UserAddUserGroupMemberResolve"]; });
+/* harmony import */ var _userListUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./userListUserGroupMemberResolve */ "hdyJ");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserGroupMemberResolve", function() { return _userListUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_33__["UserListUserGroupMemberResolve"]; });
 
-/* harmony import */ var _userRemoveUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./userRemoveUserGroupMemberResolve */ "yZ9X");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserRemoveUserGroupMemberResolve", function() { return _userRemoveUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_34__["UserRemoveUserGroupMemberResolve"]; });
+/* harmony import */ var _userAddUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./userAddUserGroupMemberResolve */ "vLs0");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserAddUserGroupMemberResolve", function() { return _userAddUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_34__["UserAddUserGroupMemberResolve"]; });
 
-/* harmony import */ var _userUpdateWhereUserGroupResolve__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./userUpdateWhereUserGroupResolve */ "GAju");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateWhereUserGroupResolve", function() { return _userUpdateWhereUserGroupResolve__WEBPACK_IMPORTED_MODULE_35__["UserUpdateWhereUserGroupResolve"]; });
+/* harmony import */ var _userRemoveUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./userRemoveUserGroupMemberResolve */ "yZ9X");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserRemoveUserGroupMemberResolve", function() { return _userRemoveUserGroupMemberResolve__WEBPACK_IMPORTED_MODULE_35__["UserRemoveUserGroupMemberResolve"]; });
 
-/* harmony import */ var _userChangeCurrentUserPasswordResolve__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./userChangeCurrentUserPasswordResolve */ "pceY");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserChangeCurrentUserPasswordResolve", function() { return _userChangeCurrentUserPasswordResolve__WEBPACK_IMPORTED_MODULE_36__["UserChangeCurrentUserPasswordResolve"]; });
+/* harmony import */ var _userUpdateWhereUserGroupResolve__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./userUpdateWhereUserGroupResolve */ "GAju");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserUpdateWhereUserGroupResolve", function() { return _userUpdateWhereUserGroupResolve__WEBPACK_IMPORTED_MODULE_36__["UserUpdateWhereUserGroupResolve"]; });
 
-/* harmony import */ var _userIsAdminResolve__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./userIsAdminResolve */ "jAVX");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserIsAdminResolve", function() { return _userIsAdminResolve__WEBPACK_IMPORTED_MODULE_37__["UserIsAdminResolve"]; });
+/* harmony import */ var _userChangeCurrentUserPasswordResolve__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./userChangeCurrentUserPasswordResolve */ "pceY");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserChangeCurrentUserPasswordResolve", function() { return _userChangeCurrentUserPasswordResolve__WEBPACK_IMPORTED_MODULE_37__["UserChangeCurrentUserPasswordResolve"]; });
 
-/* harmony import */ var _userChangePasswordResolve__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./userChangePasswordResolve */ "JqS3");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserChangePasswordResolve", function() { return _userChangePasswordResolve__WEBPACK_IMPORTED_MODULE_38__["UserChangePasswordResolve"]; });
+/* harmony import */ var _userIsAdminResolve__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./userIsAdminResolve */ "jAVX");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserIsAdminResolve", function() { return _userIsAdminResolve__WEBPACK_IMPORTED_MODULE_38__["UserIsAdminResolve"]; });
 
-/* harmony import */ var _userLoginResolve__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./userLoginResolve */ "Vxei");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserLoginResolve", function() { return _userLoginResolve__WEBPACK_IMPORTED_MODULE_39__["UserLoginResolve"]; });
+/* harmony import */ var _userChangePasswordResolve__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./userChangePasswordResolve */ "JqS3");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserChangePasswordResolve", function() { return _userChangePasswordResolve__WEBPACK_IMPORTED_MODULE_39__["UserChangePasswordResolve"]; });
+
+/* harmony import */ var _userLoginResolve__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./userLoginResolve */ "Vxei");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserLoginResolve", function() { return _userLoginResolve__WEBPACK_IMPORTED_MODULE_40__["UserLoginResolve"]; });
+
 
 
 
@@ -2840,11 +2886,13 @@ __webpack_require__.r(__webpack_exports__);
 /* empty/unused harmony star reexport *//* harmony import */ var _ServiceAllowRule__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ServiceAllowRule */ "3uR0");
 /* empty/unused harmony star reexport *//* harmony import */ var _ServiceForwardTarget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ServiceForwardTarget */ "/K3N");
 /* empty/unused harmony star reexport *//* harmony import */ var _ConnectionInfo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ConnectionInfo */ "xbLK");
-/* empty/unused harmony star reexport *//* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./User */ "Y9ql");
-/* empty/unused harmony star reexport *//* harmony import */ var _UserGroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./UserGroup */ "zG5P");
-/* empty/unused harmony star reexport *//* harmony import */ var _PasswordModel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./PasswordModel */ "nter");
-/* empty/unused harmony star reexport *//* harmony import */ var _LoginInputModel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./LoginInputModel */ "44xt");
+/* empty/unused harmony star reexport *//* harmony import */ var _NetworkSpeed__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NetworkSpeed */ "OgGP");
+/* empty/unused harmony star reexport *//* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./User */ "Y9ql");
+/* empty/unused harmony star reexport *//* harmony import */ var _UserGroup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./UserGroup */ "zG5P");
+/* empty/unused harmony star reexport *//* harmony import */ var _PasswordModel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./PasswordModel */ "nter");
+/* empty/unused harmony star reexport *//* harmony import */ var _LoginInputModel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./LoginInputModel */ "44xt");
 /* empty/unused harmony star reexport */
+
 
 
 
@@ -2940,6 +2988,7 @@ SdkModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule
 SdkModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ providers: [
         _services__WEBPACK_IMPORTED_MODULE_2__["CidrGroupService"],
         _services__WEBPACK_IMPORTED_MODULE_2__["ServiceService"],
+        _services__WEBPACK_IMPORTED_MODULE_2__["SystemService"],
         _services__WEBPACK_IMPORTED_MODULE_2__["UserService"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["CidrGroupListCidrGroupResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["CidrGroupCreateCidrGroupResolve"],
@@ -2963,6 +3012,7 @@ SdkModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector
         _resolves__WEBPACK_IMPORTED_MODULE_3__["ServiceGetServiceForwardTargetResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["ServiceDeleteServiceForwardTargetResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["ServiceListConnectionsResolve"],
+        _resolves__WEBPACK_IMPORTED_MODULE_3__["SystemGetNetworkSpeedResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["UserListUserResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["UserCreateUserResolve"],
         _resolves__WEBPACK_IMPORTED_MODULE_3__["UserUpdateUserResolve"],
@@ -5256,7 +5306,7 @@ class NzModalLegacyAPI {
 /*!**************************!*\
   !*** ./src/sdk/index.ts ***!
   \**************************/
-/*! exports provided: CidrGroupService, ServiceService, UserService, CidrGroupListCidrGroupResolve, CidrGroupCreateCidrGroupResolve, CidrGroupUpdateCidrGroupResolve, CidrGroupGetCidrGroupResolve, CidrGroupDeleteCidrGroupResolve, ServiceListServiceResolve, ServiceCreateServiceResolve, ServiceUpdateServiceResolve, ServiceListMyServiceResolve, ServiceGetServiceResolve, ServiceDeleteServiceResolve, ServiceListServiceAllowRuleResolve, ServiceCreateServiceAllowRuleResolve, ServiceUpdateServiceAllowRuleResolve, ServiceGetServiceAllowRuleResolve, ServiceDeleteServiceAllowRuleResolve, ServiceListServiceForwardTargetResolve, ServiceCreateServiceForwardTargetResolve, ServiceUpdateServiceForwardTargetResolve, ServiceGetServiceForwardTargetResolve, ServiceDeleteServiceForwardTargetResolve, ServiceListConnectionsResolve, UserListUserResolve, UserCreateUserResolve, UserUpdateUserResolve, UserGetUserResolve, UserDeleteUserResolve, UserListUserGroupResolve, UserCreateUserGroupResolve, UserUpdateUserGroupResolve, UserGetUserGroupResolve, UserDeleteUserGroupResolve, UserListUserGroupMemberResolve, UserAddUserGroupMemberResolve, UserRemoveUserGroupMemberResolve, UserUpdateWhereUserGroupResolve, UserChangeCurrentUserPasswordResolve, UserIsAdminResolve, UserChangePasswordResolve, UserLoginResolve, SdkModule */
+/*! exports provided: CidrGroupService, ServiceService, SystemService, UserService, CidrGroupListCidrGroupResolve, CidrGroupCreateCidrGroupResolve, CidrGroupUpdateCidrGroupResolve, CidrGroupGetCidrGroupResolve, CidrGroupDeleteCidrGroupResolve, ServiceListServiceResolve, ServiceCreateServiceResolve, ServiceUpdateServiceResolve, ServiceListMyServiceResolve, ServiceGetServiceResolve, ServiceDeleteServiceResolve, ServiceListServiceAllowRuleResolve, ServiceCreateServiceAllowRuleResolve, ServiceUpdateServiceAllowRuleResolve, ServiceGetServiceAllowRuleResolve, ServiceDeleteServiceAllowRuleResolve, ServiceListServiceForwardTargetResolve, ServiceCreateServiceForwardTargetResolve, ServiceUpdateServiceForwardTargetResolve, ServiceGetServiceForwardTargetResolve, ServiceDeleteServiceForwardTargetResolve, ServiceListConnectionsResolve, SystemGetNetworkSpeedResolve, UserListUserResolve, UserCreateUserResolve, UserUpdateUserResolve, UserGetUserResolve, UserDeleteUserResolve, UserListUserGroupResolve, UserCreateUserGroupResolve, UserUpdateUserGroupResolve, UserGetUserGroupResolve, UserDeleteUserGroupResolve, UserListUserGroupMemberResolve, UserAddUserGroupMemberResolve, UserRemoveUserGroupMemberResolve, UserUpdateWhereUserGroupResolve, UserChangeCurrentUserPasswordResolve, UserIsAdminResolve, UserChangePasswordResolve, UserLoginResolve, SdkModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5266,6 +5316,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CidrGroupService", function() { return _services__WEBPACK_IMPORTED_MODULE_1__["CidrGroupService"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ServiceService", function() { return _services__WEBPACK_IMPORTED_MODULE_1__["ServiceService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SystemService", function() { return _services__WEBPACK_IMPORTED_MODULE_1__["SystemService"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return _services__WEBPACK_IMPORTED_MODULE_1__["UserService"]; });
 
@@ -5313,6 +5365,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ServiceDeleteServiceForwardTargetResolve", function() { return _resolves__WEBPACK_IMPORTED_MODULE_2__["ServiceDeleteServiceForwardTargetResolve"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ServiceListConnectionsResolve", function() { return _resolves__WEBPACK_IMPORTED_MODULE_2__["ServiceListConnectionsResolve"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SystemGetNetworkSpeedResolve", function() { return _resolves__WEBPACK_IMPORTED_MODULE_2__["SystemGetNetworkSpeedResolve"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserListUserResolve", function() { return _resolves__WEBPACK_IMPORTED_MODULE_2__["UserListUserResolve"]; });
 
@@ -8331,7 +8385,7 @@ UserAddUserGroupMemberResolve.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0_
 /*!***********************************!*\
   !*** ./src/sdk/services/index.ts ***!
   \***********************************/
-/*! exports provided: CidrGroupService, ServiceService, UserService */
+/*! exports provided: CidrGroupService, ServiceService, SystemService, UserService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8342,8 +8396,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./service.service */ "kLLD");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ServiceService", function() { return _service_service__WEBPACK_IMPORTED_MODULE_1__["ServiceService"]; });
 
-/* harmony import */ var _user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user.service */ "7h7V");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return _user_service__WEBPACK_IMPORTED_MODULE_2__["UserService"]; });
+/* harmony import */ var _system_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./system.service */ "823c");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SystemService", function() { return _system_service__WEBPACK_IMPORTED_MODULE_2__["SystemService"]; });
+
+/* harmony import */ var _user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./user.service */ "7h7V");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return _user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"]; });
+
 
 
 

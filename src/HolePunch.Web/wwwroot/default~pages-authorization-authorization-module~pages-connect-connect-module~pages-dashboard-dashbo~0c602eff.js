@@ -8879,6 +8879,37 @@ const VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["Version"]('11.2.
 
 /***/ }),
 
+/***/ "823c":
+/*!********************************************!*\
+  !*** ./src/sdk/services/system.service.ts ***!
+  \********************************************/
+/*! exports provided: SystemService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SystemService", function() { return SystemService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+
+
+class SystemService {
+    constructor(http) {
+        this.http = http;
+    }
+    getNetworkSpeed() {
+        const url = '/api/System';
+        // #region Send Request
+        return this.http.get(url);
+        // #endregion
+    }
+}
+SystemService.ɵfac = function SystemService_Factory(t) { return new (t || SystemService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
+SystemService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: SystemService, factory: SystemService.ɵfac, providedIn: 'root' });
+
+
+/***/ }),
+
 /***/ "8ULh":
 /*!************************************************************!*\
   !*** ./node_modules/@ctrl/tinycolor/dist/module/random.js ***!
