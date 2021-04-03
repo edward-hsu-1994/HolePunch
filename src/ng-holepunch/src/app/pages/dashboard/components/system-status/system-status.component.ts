@@ -80,12 +80,12 @@ export class SystemStatusComponent implements OnInit, AfterViewInit, OnDestroy {
         this.network_in.series[0].data[0].value = Math.ceil(<number>speed.in / 1000000);
         this.network_out.series[0].data[0].value = Math.ceil(<number>speed.out / 1000000);
         this.network_in.series[0].max = Math.ceil((<number>speed.maxIn / 1000000)/100)*100;
-        if(this.network_in.series[0].max == -1){
+        if(<number>speed.maxIn < 0){
           this.network_in.series[0].max = 1000
         }
 
         this.network_out.series[0].max = Math.ceil((<number>speed.maxOut / 1000000)/100)*100;
-        if(this.network_out.series[0].max == -1){
+        if(<number>speed.maxOut < 0){
           this.network_out.series[0].max = 1000
         }
         this.updateGauge();
