@@ -6,9 +6,7 @@
   <h3 align="center">HolePunch</h3>
 
   <p align="center">
-    Easy create connection tunnel.
-    <br />
-    <a href="https://github.com/XuPeiYao/HolePunch/wiki"><strong>Explore the docs »</strong></a>
+    Connection proxy server.    
     <br />
     <br />    
     <a href="https://github.com/XuPeiYao/HolePunch/blob/master/LICENSE">License</a>
