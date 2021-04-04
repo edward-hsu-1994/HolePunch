@@ -14,7 +14,11 @@
     <a href="https://github.com/XuPeiYao/HolePunch/issues">回報錯誤</a>
     ·
     <a href="https://github.com/XuPeiYao/HolePunch/issues">功能請求</a>
-  </p>
+    <br/>
+    <img alt="Build" src="https://github.com/XuPeiYao/HolePunch/actions/workflows/build.yml/badge.svg">
+    <img alt="Docker Image Version (latest semver)" src="https://img.shields.io/docker/v/xupeiyao/holepunchweb">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/xupeiyao/holepunchweb">    
+  </p>  
 </p>
 
 <!-- TABLE OF CONTENTS -->
