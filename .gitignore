@@ -367,3 +367,4 @@ src/HolePunch.Web/appsettings.Development.json
 src/ng-holepunch/.vscode
 src/ng-holepunch/package-lock.json
 src/HolePunch.Accesses.Repositories/connection.txt
+.vscode
