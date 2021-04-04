@@ -22,20 +22,21 @@
   <summary>目錄</summary>
   <ol>
     <li>
-      <a href="#about-the-project">關於本專案</a>
+      <a href="#關於本專案">關於本專案</a>
       <ul>
-        <li><a href="#built-with">使用技術</a></li>
+        <li><a href="#為何而做">為何而做</a></li>
+        <li><a href="#使用技術">使用技術</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">快速上手</a>
+      <a href="#快速上手">快速上手</a>
       <ul>
-        <li><a href="#prerequisites">前置需求</a></li>
-        <li><a href="#installation">安裝</a></li>
+        <li><a href="#前置需求">前置需求</a></li>
+        <li><a href="#安裝">安裝</a></li>
       </ul>
     </li>
-    <li><a href="#usage">使用教學</a></li>
-    <li><a href="#license">條款</a></li>
+    <li><a href="#使用教學">使用教學</a></li>
+    <li><a href="#條款">條款</a></li>
   </ol>
 </details>
 
