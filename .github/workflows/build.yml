@@ -23,12 +23,15 @@ jobs:
       with:
         name: wwwroot
         path: ./src/HolePunch.Web/wwwroot 
+    - name: Get tag
+      id: tag
+      uses: dawidd6/action-get-tag@v1
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
         file: ./src/HolePunch.Web/Dockerfile
         context: ./src
-        tags: xupeiyao/holepunchweb:latest
+        tags: xupeiyao/holepunchweb:latest,xupeiyao/holepunchweb:${{steps.tag.outputs.tag}}
       
   frontend:
     runs-on: ubuntu-latest
