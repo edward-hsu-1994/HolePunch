@@ -51,7 +51,7 @@ export class ServiceManageComponent implements OnInit {
         this._serviceService.deleteService(<number>service.id).subscribe(()=>{
           this.loadServices();
           this._message.remove(id);
-          this._message.success('User Deleted');
+          this._message.success('Service Deleted');
         });
       }
     });
