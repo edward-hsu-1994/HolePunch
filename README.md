@@ -1,3 +1,5 @@
+### [>>The English document is not yet ready, please see the Chinese document<<](https://github.com/XuPeiYao/HolePunch/blob/master/README_ZH-TW.md)
+
 <p align="center">
   <a href="https://github.com/XuPeiYao/HolePunch">
     <img src="docs/images/logo.png" alt="Logo" width="80" height="80">

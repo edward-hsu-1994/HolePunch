@@ -14,6 +14,8 @@
     <a href="https://github.com/XuPeiYao/HolePunch/issues">回報錯誤</a>
     ·
     <a href="https://github.com/XuPeiYao/HolePunch/issues">功能請求</a>
+    ·
+    <a href="https://hub.docker.com/repository/docker/xupeiyao/holepunchweb">DockerHub頁面</a>
     <br/>
     <img alt="Build" src="https://github.com/XuPeiYao/HolePunch/actions/workflows/build.yml/badge.svg">
     <img alt="Docker Image Version (latest semver)" src="https://img.shields.io/docker/v/xupeiyao/holepunchweb">
@@ -81,9 +83,10 @@
 1. 建立空的PostgreSQL資料庫
 2. 佈署容器
 
+```bash
+docker run -d --name holepunch --network="host" -e "HolePunch_CONN_PG=<YOUR POSTGRESQL CONN STR>" xupeiyao/holepunchweb
 ```
-docker run -d --name holepunch --network="host" -e "HolePunch_CONN_PG=<YOUR POSTGRESQL CONN STR>"
-```
+
 3. 瀏覽`http://localhost`，預設帳號為`admin`，密碼為`admin`
 
 #### 環境變數
@@ -97,8 +100,43 @@ docker run -d --name holepunch --network="host" -e "HolePunch_CONN_PG=<YOUR POST
 | HolePunch_JWT_ISS        |          | JWT issuer                                                          |
 | HolePunch_JWT_AUD        |          | JWT audience                                                        |
 | HolePunch_JWT_SEC        |          | JWT密鑰字串，將自動做SHA512                                         |
+| ASPNETCORE_URLS          |          | 若欲變更預設的Http FQDN與Port，可以使用這個變數替換，如: `http://+:7777`，將Port變更為7777 |
 
 ## 使用教學
+
+1. 瀏覽至登入畫面(預設為`http://localhost`)
+
+![Imgur](https://imgur.com/NgEcWeo.png)
+
+2. 登入後若SignalR連線正常則將顯示如下
+
+![Imgur](https://imgur.com/0rvvebs.png)
+
+3. 點選`Go Dashboard`進入控制台(僅管理者成員)，初始時並不會有任何服務
+
+![Imgur](https://imgur.com/3nVOqCC.png)
+
+4. 點選`Add Service`按鈕，輸入服務資訊後儲存，**Port若為0，則表示當服務啟動時將隨機選擇Port**
+
+![Imgur](https://imgur.com/EID85YU.png)
+
+5. 上一個步驟儲存後，原本鎖定的`Forward Target`與`Allow Rules`選項就會解鎖。首先點選`Forward Target`選項，設定Proxy的目標並儲存。
+
+![Imgur](https://imgur.com/aNioous.png)
+
+6. 在同畫面中選擇`Allow Rules`選項，選擇這個服務容許連線的條件，若是選擇`User`或`User Group`，擇要連線時則需要先開啟網頁至步驟2的畫面才可以連接。
+
+![Imgur](https://imgur.com/MHbNh1y.png)
+
+7. 點選`Add User`並選擇目前使用者。
+
+![Imgur](https://imgur.com/0AE8G9a.png)
+
+8. 回到Service列表或點選Properties選項將Enabled選擇啟用
+
+![Imgur](https://imgur.com/oKQbLv5.png)
+
+9. 點選右上角的`Exit dashboard`按鈕回到步驟2並維持開畫面，使用連線工具連線至剛才設定的服務。**若是連線頁面被關掉則與該帳號關聯的連線會被中斷**
 
 ## 條款
 
