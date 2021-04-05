@@ -78,7 +78,25 @@
 
 ### 安裝
 
+1. 建立空的PostgreSQL資料庫
+2. 佈署容器
+
+```
+docker run -d --name holepunch --network="host" -e "HolePunch_CONN_PG=<YOUR POSTGRESQL CONN STR>"
+```
+3. 瀏覽`http://localhost`，預設帳號為`admin`，密碼為`admin`
+
 #### 環境變數
+
+以下為目前提供的所有環境變數設定:
+
+|         Env Name         | Required |                             Description                             |
+|:-------------------------|:--------:|:--------------------------------------------------------------------|
+| HolePunch_CONN_PG        |     ✔️    | 資料庫連線字串                                                      |
+| HolePunch_FORWARD_HEADER |          | 若有使用HTTP SERVER轉發，則需要在此設定信任的Client Real IP的header |
+| HolePunch_JWT_ISS        |          | JWT issuer                                                          |
+| HolePunch_JWT_AUD        |          | JWT audience                                                        |
+| HolePunch_JWT_SEC        |          | JWT密鑰字串，將自動做SHA512                                         |
 
 ## 使用教學
 
